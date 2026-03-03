@@ -26,3 +26,8 @@
 # Stack info files
 /stack-info.sh
 /stack-info.md
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
