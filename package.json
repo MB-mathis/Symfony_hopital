@@ -1,0 +1,28 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MB-mathis/Symfony_hopital.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MB-mathis/Symfony_hopital/issues"
+  },
+  "homepage": "https://github.com/MB-mathis/Symfony_hopital#readme",
+  "dependencies": {
+    "bulma": "^1.0.4"
+  }
+}
