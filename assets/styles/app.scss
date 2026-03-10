@@ -2,7 +2,7 @@
 $primary: #0038d1;
 
 // importer Bulma
-@import "~bulma/bulma";
+@use "bulma/bulma";
 
 // CSS perso
 body {
