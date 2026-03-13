@@ -2,37 +2,37 @@
 
 namespace App\Repository;
 
-use App\Entity\Patient;
+use App\Entity\Donneur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Patient>
+ * @extends ServiceEntityRepository<Donneur>
  */
-class PatientRepository extends ServiceEntityRepository {
+class DonneurRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry) {
-        parent::__construct($registry, Patient::class);
+        parent::__construct($registry, Donneur::class);
     }
 
 //    /**
-//     * @return Patient[] Returns an array of Patient objects
+//     * @return Donneur[] Returns an array of Donneur objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
+//        return $this->createQueryBuilder('d')
+//            ->andWhere('d.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
+//            ->orderBy('d.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Patient
+//    public function findOneBySomeField($value): ?Donneur
 //    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
+//        return $this->createQueryBuilder('d')
+//            ->andWhere('d.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()

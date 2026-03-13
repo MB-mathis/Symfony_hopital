@@ -416,8 +416,19 @@ Le système doit pouvoir évoluer pour :
 - plus de patients
 
 ---
+# 20. Autres règles métier
 
-# 20. Conclusion
+Règle métier :
+
+Si type_donneur = vivant
+alors data.donneur_vivant doit être renseigné
+et data.donneur_decede doit être vide.
+
+Si type_donneur = decede
+alors data.donneur_decede doit être renseigné
+et data.donneur_vivant doit être vide.
+
+# 21. Conclusion
 
 Cette application vise à améliorer la **coordination entre le CHU et les néphrologues de ville** en centralisant les données médicales des patients greffés.
 

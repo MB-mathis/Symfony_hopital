@@ -3,26 +3,24 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\DossierMedicalRepository;
+use App\Repository\ChirurgienRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DossierMedicalRepository::class)]
+#[ORM\Entity(repositoryClass: ChirurgienRepository::class)]
 #[ApiResource]
-class DossierMedical {
+class Chirurgien {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'dossierMedical', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Patient $patient = null;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'dossierMedicals')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $createdBy = null;
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -33,34 +31,35 @@ class DossierMedical {
     /**
      * @var Collection<int, Greffe>
      */
-    #[ORM\OneToMany(targetEntity: Greffe::class, mappedBy: 'dossierMedical')]
+    #[ORM\OneToMany(targetEntity: Greffe::class, mappedBy: 'chirurgien')]
     private Collection $greffes;
 
-    public function __construct() {
-        $this->createdAt = new \DateTimeImmutable();
+    public function __construct()
+    {
         $this->greffes = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int {
         return $this->id;
     }
 
-    public function getPatient(): ?Patient {
-        return $this->patient;
+    public function getNom(): ?string {
+        return $this->nom;
     }
 
-    public function setPatient(Patient $patient): static {
-        $this->patient = $patient;
+    public function setNom(string $nom): static {
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function getCreatedBy(): ?User {
-        return $this->createdBy;
+    public function getPrenom(): ?string {
+        return $this->prenom;
     }
 
-    public function setCreatedBy(?User $createdBy): static {
-        $this->createdBy = $createdBy;
+    public function setPrenom(string $prenom): static {
+        $this->prenom = $prenom;
 
         return $this;
     }
@@ -97,7 +96,7 @@ class DossierMedical {
     {
         if (!$this->greffes->contains($greffe)) {
             $this->greffes->add($greffe);
-            $greffe->setDossierMedical($this);
+            $greffe->setChirurgien($this);
         }
 
         return $this;
@@ -107,8 +106,8 @@ class DossierMedical {
     {
         if ($this->greffes->removeElement($greffe)) {
             // set the owning side to null (unless already changed)
-            if ($greffe->getDossierMedical() === $this) {
-                $greffe->setDossierMedical(null);
+            if ($greffe->getChirurgien() === $this) {
+                $greffe->setChirurgien(null);
             }
         }
 

@@ -7,16 +7,15 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture
-{
-    public function __construct(private UserPasswordHasherInterface $passwordHasher)
-    {
+class UserFixtures extends Fixture {
+    public function __construct(private UserPasswordHasherInterface $passwordHasher) {
     }
 
-    public function load(ObjectManager $manager): void
-    {
+    public function load(ObjectManager $manager): void {
         // Création de l'utilisateur admin de test
         $user = new User();
+        $user->setnom('Admin');
+        $user->setprenom('Admin');
         $user->setEmail('admin@example.com');
         $user->setRoles(['ROLE_USER']);
 

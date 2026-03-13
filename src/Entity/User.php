@@ -50,9 +50,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\OneToMany(targetEntity: DossierMedical::class, mappedBy: 'createdBy')]
     private Collection $dossierMedicals;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->dossierMedicals = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int {
@@ -121,49 +121,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $data;
     }
 
-    public function getNom(): ?string
-    {
+    public function getNom(): ?string {
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
-    {
+    public function setNom(string $nom): static {
         $this->nom = $nom;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
-    {
+    public function getPrenom(): ?string {
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
-    {
+    public function setPrenom(string $prenom): static {
         $this->prenom = $prenom;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
+    public function getCreatedAt(): ?\DateTimeImmutable {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
+    public function getUpdatedAt(): ?\DateTimeImmutable {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
-    {
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static {
         $this->updatedAt = $updatedAt;
 
         return $this;
@@ -172,13 +164,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @return Collection<int, DossierMedical>
      */
-    public function getDossierMedicals(): Collection
-    {
+    public function getDossierMedicals(): Collection {
         return $this->dossierMedicals;
     }
 
-    public function addDossierMedical(DossierMedical $dossierMedical): static
-    {
+    public function addDossierMedical(DossierMedical $dossierMedical): static {
         if (!$this->dossierMedicals->contains($dossierMedical)) {
             $this->dossierMedicals->add($dossierMedical);
             $dossierMedical->setCreatedBy($this);
@@ -187,8 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function removeDossierMedical(DossierMedical $dossierMedical): static
-    {
+    public function removeDossierMedical(DossierMedical $dossierMedical): static {
         if ($this->dossierMedicals->removeElement($dossierMedical)) {
             // set the owning side to null (unless already changed)
             if ($dossierMedical->getCreatedBy() === $this) {

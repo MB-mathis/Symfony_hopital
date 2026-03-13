@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Enum;
 
-enum Sexe: string
-{
+enum Sexe: string {
     case M = 'M';
     case F = 'F';
     case Autre = 'Autre';
