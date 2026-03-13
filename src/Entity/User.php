@@ -50,9 +50,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\OneToMany(targetEntity: DossierMedical::class, mappedBy: 'createdBy')]
     private Collection $dossierMedicals;
 
+    /**
+     * @var Collection<int, Patient>
+     */
+    #[ORM\OneToMany(targetEntity: Patient::class, mappedBy: 'createdBy')]
+    private Collection $patients;
+
     public function __construct() {
         $this->dossierMedicals = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
+        $this->patients = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -182,6 +189,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
             // set the owning side to null (unless already changed)
             if ($dossierMedical->getCreatedBy() === $this) {
                 $dossierMedical->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Patient>
+     */
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function addPatient(Patient $patient): static
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients->add($patient);
+            $patient->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatient(Patient $patient): static
+    {
+        if ($this->patients->removeElement($patient)) {
+            // set the owning side to null (unless already changed)
+            if ($patient->getCreatedBy() === $this) {
+                $patient->setCreatedBy(null);
             }
         }
 

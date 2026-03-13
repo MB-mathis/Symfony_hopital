@@ -36,6 +36,9 @@ class DossierMedical {
     #[ORM\OneToMany(targetEntity: Greffe::class, mappedBy: 'dossierMedical')]
     private Collection $greffes;
 
+    #[ORM\Column(length: 255)]
+    private ?string $numeroDossier = null;
+
     public function __construct() {
         $this->createdAt = new \DateTimeImmutable();
         $this->greffes = new ArrayCollection();
@@ -111,6 +114,18 @@ class DossierMedical {
                 $greffe->setDossierMedical(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNumeroDossier(): ?string
+    {
+        return $this->numeroDossier;
+    }
+
+    public function setNumeroDossier(string $numeroDossier): static
+    {
+        $this->numeroDossier = $numeroDossier;
 
         return $this;
     }
