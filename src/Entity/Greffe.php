@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\TypeGreffe;
 use App\Repository\GreffeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GreffeRepository::class)]
@@ -54,11 +56,14 @@ class Greffe
     #[ORM\Column(nullable: true)]
     private ?bool $protocole = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $protocoleFichier = null;
-
     #[ORM\Column(nullable: true)]
     private ?array $data = null;
+
+    /**
+     * @var Collection<int, Document>
+     */
+    #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'greffe')]
+    private Collection $documents;
 
     public function __construct()
     {
@@ -67,6 +72,7 @@ class Greffe
         $this->greffonFonctionnel = true;
         $this->dialyse = false;
         $this->protocole = false;
+        $this->documents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -218,18 +224,6 @@ class Greffe
         return $this;
     }
 
-    public function getProtocoleFichier(): ?string
-    {
-        return $this->protocoleFichier;
-    }
-
-    public function setProtocoleFichier(?string $protocoleFichier): static
-    {
-        $this->protocoleFichier = $protocoleFichier;
-
-        return $this;
-    }
-
     public function getData(): ?array
     {
         return $this->data;
@@ -238,6 +232,36 @@ class Greffe
     public function setData(?array $data): static
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): static
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setGreffe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): static
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getGreffe() === $this) {
+                $document->setGreffe(null);
+            }
+        }
 
         return $this;
     }
