@@ -7,6 +7,7 @@ use App\Repository\DossierMedicalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: DossierMedicalRepository::class)]
 #[ApiResource]
@@ -22,12 +23,15 @@ class DossierMedical {
 
     #[ORM\ManyToOne(inversedBy: 'dossierMedicals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Gedmo\Blameable(on: 'create')]
     private ?User $createdBy = null;
 
     #[ORM\Column]
+    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Gedmo\Timestampable(on: 'update')]
     private ?\DateTimeImmutable $updatedAt = null;
 
     /**
@@ -39,9 +43,16 @@ class DossierMedical {
     #[ORM\Column(length: 255)]
     private ?string $numeroDossier = null;
 
+    /**
+     * @var Collection<int, Document>
+     */
+    #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'dossierMedical')]
+    private Collection $documents;
+
     public function __construct() {
         $this->createdAt = new \DateTimeImmutable();
         $this->greffes = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -126,6 +137,36 @@ class DossierMedical {
     public function setNumeroDossier(string $numeroDossier): static
     {
         $this->numeroDossier = $numeroDossier;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): static
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setDossierMedical($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): static
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getDossierMedical() === $this) {
+                $document->setDossierMedical(null);
+            }
+        }
 
         return $this;
     }

@@ -10,6 +10,7 @@ use App\Repository\DonneurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: DonneurRepository::class)]
 #[ApiResource]
@@ -41,9 +42,11 @@ class Donneur {
     private ?float $poids = null;
 
     #[ORM\Column]
+    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Gedmo\Timestampable(on: 'update')]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(length: 255)]
@@ -54,6 +57,15 @@ class Donneur {
      */
     #[ORM\OneToMany(targetEntity: Greffe::class, mappedBy: 'donneur')]
     private Collection $greffes;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $imc = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $dfg = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $clairanceCalculée = null;
 
     public function __construct()
     {
@@ -191,6 +203,42 @@ class Donneur {
                 $greffe->setDonneur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImc(): ?float
+    {
+        return $this->imc;
+    }
+
+    public function setImc(?float $imc): static
+    {
+        $this->imc = $imc;
+
+        return $this;
+    }
+
+    public function getDfg(): ?float
+    {
+        return $this->dfg;
+    }
+
+    public function setDfg(?float $dfg): static
+    {
+        $this->dfg = $dfg;
+
+        return $this;
+    }
+
+    public function getClairanceCalculée(): ?float
+    {
+        return $this->clairanceCalculée;
+    }
+
+    public function setClairanceCalculée(?float $clairanceCalculée): static
+    {
+        $this->clairanceCalculée = $clairanceCalculée;
 
         return $this;
     }

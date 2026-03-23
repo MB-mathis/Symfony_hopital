@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
 #[ApiResource]
@@ -43,9 +44,11 @@ class Patient {
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Gedmo\Timestampable(on: 'update')]
     private ?\DateTimeImmutable $updateAt = null;
 
     #[ORM\OneToOne(mappedBy: 'patient', cascade: ['persist', 'remove'])]
@@ -53,10 +56,12 @@ class Patient {
 
     #[ORM\ManyToOne(inversedBy: 'patients')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Gedmo\Blameable(on: 'create')]
     private ?User $createdBy = null;
 
     #[ORM\ManyToOne(inversedBy: 'patients')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Gedmo\Blameable(on: 'update')]
     private ?User $updatedBy = null;
 
     /**

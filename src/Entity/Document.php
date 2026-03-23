@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\DocumentRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
@@ -24,6 +22,7 @@ class Document {
 
     #[ORM\ManyToOne(inversedBy: 'documents')]
     #[ORM\JoinColumn(nullable: false)]
+    
     private ?User $uploadedBy = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -35,15 +34,14 @@ class Document {
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @var Collection<int, Consultation>
-     */
-    #[ORM\ManyToMany(targetEntity: Consultation::class, mappedBy: 'documents')]
-    private Collection $consultations;
+    #[ORM\ManyToOne(inversedBy: 'documents')]
+    private ?DossierMedical $dossierMedical = null;
+
+
 
     public function __construct()
     {
-        $this->consultations = new ArrayCollection();
+        
     }
 
     public function getId(): ?int {
@@ -110,30 +108,17 @@ class Document {
         return $this;
     }
 
-    /**
-     * @return Collection<int, Consultation>
-     */
-    public function getConsultations(): Collection
+    public function getDossierMedical(): ?DossierMedical
     {
-        return $this->consultations;
+        return $this->dossierMedical;
     }
 
-    public function addConsultation(Consultation $consultation): static
+    public function setDossierMedical(?DossierMedical $dossierMedical): static
     {
-        if (!$this->consultations->contains($consultation)) {
-            $this->consultations->add($consultation);
-            $consultation->addDocument($this);
-        }
+        $this->dossierMedical = $dossierMedical;
 
         return $this;
     }
 
-    public function removeConsultation(Consultation $consultation): static
-    {
-        if ($this->consultations->removeElement($consultation)) {
-            $consultation->removeDocument($this);
-        }
 
-        return $this;
-    }
 }

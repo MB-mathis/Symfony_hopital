@@ -8,6 +8,7 @@ use App\Repository\GreffeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: GreffeRepository::class)]
 #[ApiResource]
@@ -19,6 +20,7 @@ class Greffe
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'greffes')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Donneur $donneur = null;
 
     #[ORM\ManyToOne(inversedBy: 'greffes')]
@@ -26,7 +28,7 @@ class Greffe
     private ?DossierMedical $dossierMedical = null;
 
     #[ORM\ManyToOne(inversedBy: 'greffes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Chirurgien $chirurgien = null;
 
     #[ORM\Column]
@@ -51,6 +53,7 @@ class Greffe
     private ?bool $dialyse = null;
 
     #[ORM\Column(nullable: true)]
+    #[Gedmo\Timestampable(on: 'update')]
     private ?\DateTimeImmutable $dateDerniereDialyse = null;
 
     #[ORM\Column(nullable: true)]

@@ -3,6 +3,6 @@
 namespace App\Enum;
 
 enum TypeDonneur: string {
-    case Vivant = 'Vivant';
-    case Decede = 'Décede';
+    case VIVANT = 'vivant';
+    case DECEDE = 'decede';
 }
