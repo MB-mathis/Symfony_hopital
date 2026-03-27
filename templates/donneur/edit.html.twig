@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Donneur{% endblock %}
+
+{% block body %}
+    <h1>Edit Donneur</h1>
+
+    {{ include('donneur/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_donneur_index') }}">back to list</a>
+
+    {{ include('donneur/_delete_form.html.twig') }}
+{% endblock %}

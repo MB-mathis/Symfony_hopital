@@ -65,7 +65,7 @@ class Donneur {
     private ?float $dfg = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $clairanceCalculée = null;
+    private ?float $clairanceCalculee = null;
 
     public function __construct()
     {
@@ -231,14 +231,14 @@ class Donneur {
         return $this;
     }
 
-    public function getClairanceCalculée(): ?float
+    public function getClairanceCalculee(): ?float
     {
-        return $this->clairanceCalculée;
+        return $this->clairanceCalculee;
     }
 
-    public function setClairanceCalculée(?float $clairanceCalculée): static
+    public function setClairanceCalculee(?float $clairanceCalculee): static
     {
-        $this->clairanceCalculée = $clairanceCalculée;
+        $this->clairanceCalculee = $clairanceCalculee;
 
         return $this;
     }

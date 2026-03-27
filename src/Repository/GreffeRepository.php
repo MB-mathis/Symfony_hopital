@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Greffe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\DossierMedical;
 
 /**
  * @extends ServiceEntityRepository<Greffe>
@@ -16,28 +17,27 @@ class GreffeRepository extends ServiceEntityRepository
         parent::__construct($registry, Greffe::class);
     }
 
-//    /**
-//     * @return Greffe[] Returns an array of Greffe objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Greffe[] Returns an array of Greffe objects
+    */
+    // public function findGreffeByUser(User $user): array
+    // {
+    //     return $this->createQueryBuilder('p')
+    //         ->andWhere('p.createdBy = :user')
+    //         ->setParameter('user', $user)
+    //         ->orderBy('p.id', 'DESC') // ou createdAt si tu l’as
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
-//    public function findOneBySomeField($value): ?Greffe
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByDossier(DossierMedical $dossier): array
+    {
+        return $this->createQueryBuilder('g')
+            ->andWhere('g.dossierMedical = :dossier')
+            ->setParameter('dossier', $dossier)
+            ->orderBy('g.rangGreffe', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Greffe{% endblock %}
+
+{% block body %}
+    <h1>Create new Greffe</h1>
+
+    {{ include('greffe/_form.html.twig') }}
+
+    <a href="{{ path('app_greffe_index') }}">back to list</a>
+{% endblock %}

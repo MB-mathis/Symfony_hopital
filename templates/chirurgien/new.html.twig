@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Chirurgien{% endblock %}
+
+{% block body %}
+    <h1>Create new Chirurgien</h1>
+
+    {{ include('chirurgien/_form.html.twig') }}
+
+    <a href="{{ path('app_chirurgien_index') }}">back to list</a>
+{% endblock %}

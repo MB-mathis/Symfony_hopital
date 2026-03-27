@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossier Médical de {{ patient.nom }}{% endblock %}
+
+{% block body %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">Dossier Médical</h1>
+        <h2 class="subtitle">{{ patient.nom }} {{ patient.prenom }}</h2>
+
+        <div class="box">
+            <ul>
+                <li><strong>Numéro de dossier :</strong> {{ dossier.numeroDossier }}</li>
+                <li><strong>Date de création :</strong> {{ dossier.createdAt|date('d/m/Y') }}</li>
+                <li><strong>Sexe :</strong> {{ patient.sexe.value }}</li>
+                <li><strong>Ville :</strong> {{ patient.ville }}</li>
+                <li><strong>IMC :</strong> {{ dossier.imc ?: 'N/A' }}</li>
+                <li><strong>DFG :</strong> {{ dossier.dfg ?: 'N/A' }}</li>
+            </ul>
+        </div>
+
+        <div class="buttons">
+            <a class="button is-primary" href="{{ path('app_dossier_greffes', {'id': dossier.id}) }}">Voir les greffes</a>
+            <a class="button" href="{{ path('app_patient_index') }}">Retour à la liste</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

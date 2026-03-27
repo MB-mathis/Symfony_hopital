@@ -28,7 +28,7 @@ class Patient {
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateNaissance = null;
 
-    #[ORM\Column(enumType: Sexe::class)]
+    #[ORM\Column(type: Types::STRING, enumType: Sexe::class)]
     private ?Sexe $sexe = null;
 
     #[ORM\Column(length: 255)]

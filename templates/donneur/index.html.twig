@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donneur index{% endblock %}
+
+{% block body %}
+    <h1>Donneur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>GroupeSanguin</th>
+                <th>Sexe</th>
+                <th>Taille</th>
+                <th>Data</th>
+                <th>TypeDonneur</th>
+                <th>DateNaissance</th>
+                <th>Poids</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>NumeroCrista</th>
+                <th>Imc</th>
+                <th>Dfg</th>
+                <th>ClairanceCalculée</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for donneur in donneurs %}
+            <tr>
+                <td>{{ donneur.id }}</td>
+                <td>{{ donneur.groupeSanguin.value }}</td>
+                <td>{{ donneur.sexe.value }}</td>
+                <td>{{ donneur.taille }}</td>
+                <td>{{ donneur.data ? donneur.data|json_encode : '' }}</td>
+                <td>{{ donneur.typeDonneur.value }}</td>
+                <td>{{ donneur.dateNaissance ? donneur.dateNaissance|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ donneur.poids }}</td>
+                <td>{{ donneur.createdAt ? donneur.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ donneur.updatedAt ? donneur.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ donneur.numeroCrista }}</td>
+                <td>{{ donneur.imc }}</td>
+                <td>{{ donneur.dfg }}</td>
+                <td>{{ donneur.clairanceCalculee }}</td>
+                <td>
+                    <a href="{{ path('app_donneur_show', {'id': donneur.id}) }}">show</a>
+                    <a href="{{ path('app_donneur_edit', {'id': donneur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_donneur_new') }}">Create new</a>
+{% endblock %}

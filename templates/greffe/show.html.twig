@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Greffe{% endblock %}
+
+{% block body %}
+    <h1>Greffe</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ greffe.id }}</td>
+            </tr>
+            <tr>
+                <th>DateGreffe</th>
+                <td>{{ greffe.dateGreffe ? greffe.dateGreffe|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>RangGreffe</th>
+                <td>{{ greffe.rangGreffe }}</td>
+            </tr>
+            <tr>
+                <th>TypeGreffe</th>
+                <td>{{ greffe.typeGreffe }}</td>
+            </tr>
+            <tr>
+                <th>GreffonFonctionnel</th>
+                <td>{{ greffe.greffonFonctionnel ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DateFinFonctionGreffon</th>
+                <td>{{ greffe.dateFinFonctionGreffon ? greffe.dateFinFonctionGreffon|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CauseFinFonctionGreffon</th>
+                <td>{{ greffe.causeFinFonctionGreffon }}</td>
+            </tr>
+            <tr>
+                <th>Dialyse</th>
+                <td>{{ greffe.dialyse ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DateDerniereDialyse</th>
+                <td>{{ greffe.dateDerniereDialyse ? greffe.dateDerniereDialyse|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Protocole</th>
+                <td>{{ greffe.protocole ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Data</th>
+                <td>{{ greffe.data ? greffe.data|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_greffe_index') }}">back to list</a>
+
+    <a href="{{ path('app_greffe_edit', {'id': greffe.id}) }}">edit</a>
+
+    {{ include('greffe/_delete_form.html.twig') }}
+{% endblock %}

@@ -61,7 +61,7 @@ class MedicalCalculatorService
             if ($donneur->getSexe() === Sexe::F) {
                 $clairance *= 0.742;
             }
-            $donneur->setClairanceCalculée(round($clairance, 2));
+            $donneur->setClairanceCalculee(round($clairance, 2));
         }
 
         return $donneur;

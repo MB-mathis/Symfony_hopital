@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Greffe index{% endblock %}
+
+{% block body %}
+    <h1>Greffe index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DateGreffe</th>
+                <th>RangGreffe</th>
+                <th>TypeGreffe</th>
+                <th>GreffonFonctionnel</th>
+                <th>DateFinFonctionGreffon</th>
+                <th>CauseFinFonctionGreffon</th>
+                <th>Dialyse</th>
+                <th>DateDerniereDialyse</th>
+                <th>Protocole</th>
+                <th>Data</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for greffe in greffes %}
+            <tr>
+                <td>{{ greffe.id }}</td>
+                <td>{{ greffe.dateGreffe ? greffe.dateGreffe|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ greffe.rangGreffe }}</td>
+                <td>{{ greffe.typeGreffe }}</td>
+                <td>{{ greffe.greffonFonctionnel ? 'Yes' : 'No' }}</td>
+                <td>{{ greffe.dateFinFonctionGreffon ? greffe.dateFinFonctionGreffon|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ greffe.causeFinFonctionGreffon }}</td>
+                <td>{{ greffe.dialyse ? 'Yes' : 'No' }}</td>
+                <td>{{ greffe.dateDerniereDialyse ? greffe.dateDerniereDialyse|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ greffe.protocole ? 'Yes' : 'No' }}</td>
+                <td>{{ greffe.data ? greffe.data|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('app_greffe_show', {'id': greffe.id}) }}">show</a>
+                    <a href="{{ path('app_greffe_edit', {'id': greffe.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_greffe_new') }}">Create new</a>
+{% endblock %}
