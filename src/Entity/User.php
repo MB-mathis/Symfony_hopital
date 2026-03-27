@@ -74,12 +74,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\OneToMany(targetEntity: Consultation::class, mappedBy: 'user')]
     private Collection $consultations;
 
+    /**
+     * @var Collection<int, PatientUserShare>
+     */
+    #[ORM\OneToMany(targetEntity: PatientUserShare::class, mappedBy: 'user')]
+    private Collection $patientUserShares;
+
     public function __construct() {
         $this->dossierMedicals = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->patients = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->consultations = new ArrayCollection();
+        $this->patientUserShares = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -299,6 +306,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
             // set the owning side to null (unless already changed)
             if ($consultation->getUser() === $this) {
                 $consultation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PatientUserShare>
+     */
+    public function getPatientUserShares(): Collection
+    {
+        return $this->patientUserShares;
+    }
+
+    public function addPatientUserShare(PatientUserShare $patientUserShare): static
+    {
+        if (!$this->patientUserShares->contains($patientUserShare)) {
+            $this->patientUserShares->add($patientUserShare);
+            $patientUserShare->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatientUserShare(PatientUserShare $patientUserShare): static
+    {
+        if ($this->patientUserShares->removeElement($patientUserShare)) {
+            // set the owning side to null (unless already changed)
+            if ($patientUserShare->getUser() === $this) {
+                $patientUserShare->setUser(null);
             }
         }
 

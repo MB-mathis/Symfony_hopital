@@ -1,13 +1,121 @@
+{# templates/patient/edit.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Patient{% endblock %}
+{% block title %}Modifier un patient{% endblock %}
 
 {% block body %}
-    <h1>Edit Patient</h1>
+<section class="section">
+    <div class="container">
+        <h1 class="title">Modifier un patient</h1>
 
-    {{ include('patient/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
 
-    <a href="{{ path('app_patient_index') }}">back to list</a>
+        <div class="columns is-multiline">
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(form.nom) }}
+                    <div class="control">
+                        {{ form_widget(form.nom, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(form.nom) }}
+                </div>
+            </div>
 
-    {{ include('patient/_delete_form.html.twig') }}
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(form.prenom) }}
+                    <div class="control">
+                        {{ form_widget(form.prenom, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(form.prenom) }}
+                </div>
+            </div>
+
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(form.dateNaissance) }}
+                    <div class="control">
+                        {{ form_widget(form.dateNaissance, {'attr': {'class': 'input', 'type': 'date'}}) }}
+                    </div>
+                    {{ form_errors(form.dateNaissance) }}
+                </div>
+            </div>
+
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(form.sexe) }}
+                    <div class="control">
+                        {{ form_widget(form.sexe, {'attr': {'class': 'select'}}) }}
+                    </div>
+                    {{ form_errors(form.sexe) }}
+                </div>
+            </div>
+
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(form.ville) }}
+                    <div class="control">
+                        {{ form_widget(form.ville, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(form.ville) }}
+                </div>
+            </div>
+
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(form.codePostal) }}
+                    <div class="control">
+                        {{ form_widget(form.codePostal, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(form.codePostal) }}
+                </div>
+            </div>
+
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(form.telephone) }}
+                    <div class="control">
+                        {{ form_widget(form.telephone, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(form.telephone) }}
+                </div>
+            </div>
+
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(form.email) }}
+                    <div class="control">
+                        {{ form_widget(form.email, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(form.email) }}
+                </div>
+            </div>
+
+            {# Champ pour partager le patient #}
+            <div class="column is-full">
+                <div class="field">
+                    {{ form_label(form.patientUserShares, 'Partager avec :') }}
+                    <div class="control">
+                        {{ form_widget(form.patientUserShares) }}
+                    </div>
+                    {{ form_errors(form.patientUserShares) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-primary">Mettre à jour</button>
+            </div>
+            <div class="control">
+                <a href="{{ path('app_patient_index') }}" class="button is-light">Annuler</a>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+
+        {# Bouton de suppression #}
+        {{ include('patient/_delete_form.html.twig') }}
+    </div>
+</section>
 {% endblock %}

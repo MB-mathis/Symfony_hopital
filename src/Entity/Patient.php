@@ -49,7 +49,7 @@ class Patient {
 
     #[ORM\Column(nullable: true)]
     #[Gedmo\Timestampable(on: 'update')]
-    private ?\DateTimeImmutable $updateAt = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\OneToOne(mappedBy: 'patient', cascade: ['persist', 'remove'])]
     private ?DossierMedical $dossierMedical = null;
@@ -70,9 +70,16 @@ class Patient {
     #[ORM\OneToMany(targetEntity: Consultation::class, mappedBy: 'patient')]
     private Collection $consultations;
 
+    /**
+     * @var Collection<int, PatientUserShare>
+     */
+    #[ORM\OneToMany(targetEntity: PatientUserShare::class, mappedBy: 'patient')]
+    private Collection $patientUserShares;
+
     public function __construct() {
         $this->createdAt = new \DateTimeImmutable();
         $this->consultations = new ArrayCollection();
+        $this->patientUserShares = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -169,12 +176,12 @@ class Patient {
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable {
-        return $this->updateAt;
+    public function getUpdatedAt(): ?\DateTimeImmutable {
+        return $this->updatedAt;
     }
 
-    public function setUpdateAt(?\DateTimeImmutable $updateAt): static {
-        $this->updateAt = $updateAt;
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -242,6 +249,41 @@ class Patient {
             // set the owning side to null (unless already changed)
             if ($consultation->getPatient() === $this) {
                 $consultation->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+    
+    public function getAuthorizedUsers(): array
+    {
+        return $this->patientUserShares->map(fn($share) => $share->getUser())->toArray();
+    }
+
+    /**
+     * @return Collection<int, PatientUserShare>
+     */
+    public function getPatientUserShares(): Collection
+    {
+        return $this->patientUserShares;
+    }
+
+    public function addPatientUserShare(PatientUserShare $patientUserShare): static
+    {
+        if (!$this->patientUserShares->contains($patientUserShare)) {
+            $this->patientUserShares->add($patientUserShare);
+            $patientUserShare->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatientUserShare(PatientUserShare $patientUserShare): static
+    {
+        if ($this->patientUserShares->removeElement($patientUserShare)) {
+            // set the owning side to null (unless already changed)
+            if ($patientUserShare->getPatient() === $this) {
+                $patientUserShare->setPatient(null);
             }
         }
 

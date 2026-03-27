@@ -2,15 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\DossierMedical;
 use App\Entity\Patient;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Enum\Sexe;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Form\PatientUserShareType;
+
 
 class PatientType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
@@ -34,24 +34,15 @@ class PatientType extends AbstractType {
             ->add('codePostal')
             ->add('telephone')
             ->add('email')
-            // ->add('createdAt', null, [
-            //     'widget' => 'single_text',
-            // ])
-            // ->add('updateAt', null, [
-            //     'widget' => 'single_text',
-            // ])
-            // ->add('dossierMedical', EntityType::class, [
-            //     'class' => DossierMedical::class,
-            //     'choice_label' => 'id',
-            // ])
-            // ->add('createdBy', EntityType::class, [
-            //     'class' => User::class,
-            //     'choice_label' => 'id',
-            // ])
-            // ->add('updatedBy', EntityType::class, [
-            //     'class' => User::class,
-            //     'choice_label' => 'id',
-            // ])
+            
+            // Champ pour partager le patient avec d'autres utilisateurs
+            ->add('patientUserShares', CollectionType::class, [
+                'entry_type' => PatientUserShareType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false, // important pour Doctrine
+                'label' => 'Partages Utilisateurs',
+            ])
         ;
     }
 
