@@ -17,12 +17,15 @@ class PatientRepository extends ServiceEntityRepository {
    /**
     * @return Patient[] Returns an array of Patient objects
     */
-    public function findPatientsByUser(User $user): array
+
+   public function findPatientsByUser(User $user): array
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.createdBy = :user')
+            ->leftJoin('p.patientUserShares', 'pus') // jointure avec PatientUserShare
+            ->andWhere('p.createdBy = :user OR pus.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('p.id', 'DESC') // ou createdAt si tu l’as
+            ->orderBy('p.createdAt', 'DESC') // ou createdAt si tu veux
+            ->distinct()
             ->getQuery()
             ->getResult();
     }

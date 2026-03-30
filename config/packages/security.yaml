@@ -42,12 +42,13 @@ security:
     # Note: Only the *first* matching rule is applied
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/greffe, roles: ROLE_ADMIN  }
-         - { path: ^/patient, roles: ROLE_ADMIN }
-         - { path: ^/user, roles: ROLE_ADMIN }
-         - { path: ^/dossier/medical, roles: ROLE_ADMIN }
-         - { path: ^/profile, roles: ROLE_ADMIN  }
-
+        #  - { path: ^/greffe, roles: ROLE_ADMIN  }
+        #  - { path: ^/patient, roles: ROLE_ADMIN }
+        #  - { path: ^/patient, roles: ROLE_SUPER_ADMIN }
+        #  - { path: ^/user, roles: ROLE_ADMIN }
+        #  - { path: ^/dossier/medical, roles: ROLE_ADMIN }
+        #  - { path: ^/profile, roles: ROLE_ADMIN  }
+         
 
 when@test:
     security:

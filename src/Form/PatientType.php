@@ -11,9 +11,10 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Form\PatientUserShareType;
 
-
-class PatientType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options): void {
+class PatientType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
         $builder
             ->add('nom')
             ->add('prenom')
@@ -33,22 +34,25 @@ class PatientType extends AbstractType {
             ->add('ville')
             ->add('codePostal')
             ->add('telephone')
-            ->add('email')
-            
-            // Champ pour partager le patient avec d'autres utilisateurs
-            ->add('patientUserShares', CollectionType::class, [
+            ->add('email');
+
+        // Bloc partage : seulement si l'utilisateur a le droit
+        if (!empty($options['can_edit_shares']) && $options['can_edit_shares'] === true) {
+            $builder->add('patientUserShares', CollectionType::class, [
                 'entry_type' => PatientUserShareType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false, // important pour Doctrine
+                'by_reference' => false,
                 'label' => 'Partages Utilisateurs',
-            ])
-        ;
+            ]);
+        }
     }
 
-    public function configureOptions(OptionsResolver $resolver): void {
+    public function configureOptions(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
             'data_class' => Patient::class,
+            'can_edit_shares' => false, // valeur par défaut
         ]);
     }
 }

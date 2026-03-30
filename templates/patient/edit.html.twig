@@ -91,18 +91,20 @@
                 </div>
             </div>
 
-            {# Champ pour partager le patient #}
-            <div class="column is-full">
-                <div class="field">
-                    {{ form_label(form.patientUserShares, 'Partager avec :') }}
-                    <div class="control">
-                        {{ form_widget(form.patientUserShares) }}
+            {# Affiche le champ seulement s'il est présent #}
+            {% if form.patientUserShares is defined %}
+                <div class="column is-full">
+                    <div class="field">
+                        <label class="label">Partager avec :</label>
+                        <div class="control">
+                            {{ form_widget(form.patientUserShares) }}
+                        </div>
+                        {{ form_errors(form.patientUserShares) }}
                     </div>
-                    {{ form_errors(form.patientUserShares) }}
                 </div>
-            </div>
+            {% endif %}
         </div>
-
+        
         <div class="field is-grouped">
             <div class="control">
                 <button class="button is-primary">Mettre à jour</button>
@@ -115,7 +117,7 @@
         {{ form_end(form) }}
 
         {# Bouton de suppression #}
-        {{ include('patient/_delete_form.html.twig') }}
+        {{ include('patient/_delete_form.html.twig', {'patient': patient}) }}
     </div>
 </section>
 {% endblock %}

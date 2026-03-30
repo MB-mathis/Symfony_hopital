@@ -1,0 +1,38 @@
+{# templates/patient/_collection_patient_user_shares.html.twig #}
+<div class="collection" data-prototype="{{ form_widget(form.patientUserShares.vars.prototype)|e('html_attr') }}">
+    <div class="collection-rows">
+        {% for userShareForm in form.patientUserShares %}
+            <div class="collection-row mb-2">
+                {{ form_widget(userShareForm, {'attr': {'class': 'input'}}) }}
+                <button type="button" class="button is-small is-danger ml-2" data-action="remove-line">Supprimer</button>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" class="button is-small is-primary mt-2" data-action="add-line">Ajouter un utilisateur</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const collection = document.querySelector('.collection');
+    if (!collection) return;
+
+    const rowsContainer = collection.querySelector('.collection-rows');
+    const addBtn = collection.querySelector('[data-action="add-line"]');
+    const prototype = collection.dataset.prototype;
+
+    addBtn.addEventListener('click', function() {
+        const index = rowsContainer.children.length;
+        const newForm = prototype.replace(/__name__/g, index);
+        const div = document.createElement('div');
+        div.classList.add('collection-row', 'mb-2');
+        div.innerHTML = newForm + '<button type="button" class="button is-small is-danger ml-2" data-action="remove-line">Supprimer</button>';
+        rowsContainer.appendChild(div);
+    });
+
+    rowsContainer.addEventListener('click', function(e) {
+        if (e.target.dataset.action === 'remove-line') {
+            e.target.closest('.collection-row').remove();
+        }
+    });
+});
+</script>

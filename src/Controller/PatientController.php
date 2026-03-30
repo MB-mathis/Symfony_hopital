@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\DossierMedicalRepository;
-
+use App\Security\Voter\PatientVoter;
 
 #[Route('/patient')]
 final class PatientController extends AbstractController {
@@ -25,7 +25,7 @@ final class PatientController extends AbstractController {
     #[Route('/new', name: 'app_patient_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response {
         $patient = new Patient();
-        $form = $this->createForm(PatientType::class, $patient);
+        $form = $this->createForm(PatientType::class, $patient,['can_edit_shares' => true,]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -50,25 +50,32 @@ final class PatientController extends AbstractController {
         ]);
     }
 
-   #[Route('/{id}/edit', name: 'app_patient_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_patient_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        Patient $patient,
         EntityManagerInterface $entityManager,
+        Patient $patient
     ): Response {
-        $form = $this->createForm(PatientType::class, $patient);
+        if ($patient->getId() && !$this->isGranted(PatientVoter::EDIT, $patient)) {
+            throw $this->createAccessDeniedException('Vous n’êtes pas autorisé à modifier ce patient.');
+        }
+
+        $form = $this->createForm(PatientType::class, $patient, [
+            'can_edit_shares' => $this->isGranted(PatientVoter::SHARE, $patient),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($patient);
             $entityManager->flush();
             $this->addFlash('success', 'Patient mis à jour avec succès.');
 
-            return $this->redirectToRoute('app_patient_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_patient_index');
         }
 
         return $this->render('patient/edit.html.twig', [
+            'form' => $form->createView(),
             'patient' => $patient,
-            'form' => $form,
         ]);
     }
 

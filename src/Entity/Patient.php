@@ -73,7 +73,7 @@ class Patient {
     /**
      * @var Collection<int, PatientUserShare>
      */
-    #[ORM\OneToMany(targetEntity: PatientUserShare::class, mappedBy: 'patient')]
+    #[ORM\OneToMany(targetEntity: PatientUserShare::class, mappedBy: 'patient', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $patientUserShares;
 
     public function __construct() {
@@ -270,10 +270,15 @@ class Patient {
 
     public function addPatientUserShare(PatientUserShare $patientUserShare): static
     {
-        if (!$this->patientUserShares->contains($patientUserShare)) {
-            $this->patientUserShares->add($patientUserShare);
-            $patientUserShare->setPatient($this);
+        // Vérifie si le user est déjà partagé
+        foreach ($this->patientUserShares as $share) {
+            if ($share->getUser() === $patientUserShare->getUser()) {
+                return $this; // déjà présent, ne rien faire
+            }
         }
+
+        $this->patientUserShares->add($patientUserShare);
+        $patientUserShare->setPatient($this);
 
         return $this;
     }

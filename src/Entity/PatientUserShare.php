@@ -7,6 +7,10 @@ use App\Repository\PatientUserShareRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PatientUserShareRepository::class)]
+#[ORM\UniqueConstraint(
+    name: 'patient_user_unique',
+    columns: ['patient_id', 'user_id']
+)]
 #[ApiResource]
 class PatientUserShare {
     #[ORM\Id]

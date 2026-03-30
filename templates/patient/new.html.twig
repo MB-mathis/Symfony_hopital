@@ -91,16 +91,17 @@
                 </div>
             </div>
 
-            {# Champ pour le partage du patient #}
+            {# CollectionType dynamique pour le partage - même partial que edit #}
             <div class="column is-full">
                 <div class="field">
-                    {{ form_label(form.authorizedUsers, 'Partager avec :') }}
+                    <label class="label">Partager avec :</label>
                     <div class="control">
-                        {{ form_widget(form.authorizedUsers, {'attr': {'class': 'select is-multiple', 'multiple': 'multiple'}}) }}
+                        {{ include('patient/_collection_patient_user_shares.html.twig', { form: form }) }}
                     </div>
-                    {{ form_errors(form.authorizedUsers) }}
+                    {{ form_errors(form.patientUserShares) }}
                 </div>
             </div>
+
         </div>
 
         <div class="field is-grouped">
