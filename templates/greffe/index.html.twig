@@ -1,53 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Greffe index{% endblock %}
+{% block title %}Greffes du dossier {{ dossier.numeroDossier }}{% endblock %}
 
 {% block body %}
-    <h1>Greffe index</h1>
+<section class="section">
+    <div class="container">
+        <h1 class="title">Greffes</h1>
+        <h2 class="subtitle">Dossier {{ dossier.numeroDossier }}</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>DateGreffe</th>
-                <th>RangGreffe</th>
-                <th>TypeGreffe</th>
-                <th>GreffonFonctionnel</th>
-                <th>DateFinFonctionGreffon</th>
-                <th>CauseFinFonctionGreffon</th>
-                <th>Dialyse</th>
-                <th>DateDerniereDialyse</th>
-                <th>Protocole</th>
-                <th>Data</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for greffe in greffes %}
-            <tr>
-                <td>{{ greffe.id }}</td>
-                <td>{{ greffe.dateGreffe ? greffe.dateGreffe|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ greffe.rangGreffe }}</td>
-                <td>{{ greffe.typeGreffe }}</td>
-                <td>{{ greffe.greffonFonctionnel ? 'Yes' : 'No' }}</td>
-                <td>{{ greffe.dateFinFonctionGreffon ? greffe.dateFinFonctionGreffon|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ greffe.causeFinFonctionGreffon }}</td>
-                <td>{{ greffe.dialyse ? 'Yes' : 'No' }}</td>
-                <td>{{ greffe.dateDerniereDialyse ? greffe.dateDerniereDialyse|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ greffe.protocole ? 'Yes' : 'No' }}</td>
-                <td>{{ greffe.data ? greffe.data|json_encode : '' }}</td>
-                <td>
-                    <a href="{{ path('app_greffe_show', {'id': greffe.id}) }}">show</a>
-                    <a href="{{ path('app_greffe_edit', {'id': greffe.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th>Rang</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Donneur</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for greffe in greffes %}
+                <tr>
+                    <td>{{ greffe.rangGreffe }}</td>
+                    <td>{{ greffe.typeGreffe.value }}</td>
+                    <td>{{ greffe.dateGreffe|date('d/m/Y') }}</td>
+                    <td>
+                        {% if greffe.donneur %}
+                            <a class="button is-small is-link" href="{{ path('app_donneur_show', {'id': greffe.donneur.id}) }}">
+                                {{ greffe.donneur.numeroCrista }}
+                            </a>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="has-text-centered">Aucune greffe trouvée pour ce dossier.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_greffe_new') }}">Create new</a>
+        <div class="buttons">
+            <a class="button" href="{{ path('app_patient_dossier', {'id': dossier.patient.id}) }}">Retour au dossier</a>
+        </div>
+    </div>
+</section>
 {% endblock %}

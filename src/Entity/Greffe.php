@@ -68,6 +68,18 @@ class Greffe
     #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'greffe')]
     private Collection $documents;
 
+    #[ORM\OneToOne(mappedBy: 'greffe', cascade: ['persist', 'remove'])]
+    private ?GroupeHLA $groupeHLA = null;
+
+    #[ORM\OneToOne(mappedBy: 'greffe', cascade: ['persist', 'remove'])]
+    private ?Serologie $serologie = null;
+
+    #[ORM\OneToOne(mappedBy: 'greffe', cascade: ['persist', 'remove'])]
+    private ?Prelevement $prelevement = null;
+
+    #[ORM\OneToOne(mappedBy: 'greffe', cascade: ['persist', 'remove'])]
+    private ?ConditionnementImmunologique $conditionnementImmunologique = null;
+
     public function __construct()
     {
         $this->dateGreffe = new \DateTimeImmutable();
@@ -265,6 +277,89 @@ class Greffe
                 $document->setGreffe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGroupeHLA(): ?GroupeHLA
+    {
+        return $this->groupeHLA;
+    }
+
+    public function setGroupeHLA(?GroupeHLA $groupeHLA): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($groupeHLA === null && $this->groupeHLA !== null) {
+            $this->groupeHLA->setGreffe(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($groupeHLA !== null && $groupeHLA->getGreffe() !== $this) {
+            $groupeHLA->setGreffe($this);
+        }
+
+        $this->groupeHLA = $groupeHLA;
+
+        return $this;
+    }
+
+    public function getSerologie(): ?Serologie
+    {
+        return $this->serologie;
+    }
+
+    public function setSerologie(?Serologie $serologie): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($serologie === null && $this->serologie !== null) {
+            $this->serologie->setGreffe(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($serologie !== null && $serologie->getGreffe() !== $this) {
+            $serologie->setGreffe($this);
+        }
+
+        $this->serologie = $serologie;
+
+        return $this;
+    }
+
+    public function getPrelevement(): ?Prelevement
+    {
+        return $this->prelevement;
+    }
+
+    public function setPrelevement(?Prelevement $prelevement): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($prelevement === null && $this->prelevement !== null) {
+            $this->prelevement->setGreffe(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($prelevement !== null && $prelevement->getGreffe() !== $this) {
+            $prelevement->setGreffe($this);
+        }
+
+        $this->prelevement = $prelevement;
+
+        return $this;
+    }
+
+    public function getConditionnementImmunologique(): ?ConditionnementImmunologique
+    {
+        return $this->conditionnementImmunologique;
+    }
+
+    public function setConditionnementImmunologique(ConditionnementImmunologique $conditionnementImmunologique): static
+    {
+        // set the owning side of the relation if necessary
+        if ($conditionnementImmunologique->getGreffe() !== $this) {
+            $conditionnementImmunologique->setGreffe($this);
+        }
+
+        $this->conditionnementImmunologique = $conditionnementImmunologique;
 
         return $this;
     }

@@ -11,35 +11,70 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Service\DonneurService;
 
-#[IsGranted('ROLE_ADMIN')]
 #[Route('/donneur')]
 final class DonneurController extends AbstractController {
     #[Route(name: 'app_donneur_index', methods: ['GET'])]
     public function index(DonneurRepository $donneurRepository): Response {
         return $this->render('donneur/index.html.twig', [
-            'donneurs' => $donneurRepository->findAll(),
+            'donneurs' => $donneurRepository->findAllDonneurs(),
         ]);
     }
 
     #[Route('/new', name: 'app_donneur_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response {
+    public function new(Request $request,
+     DonneurService $donneurService
+     ): Response {
         $donneur = new Donneur();
         $form = $this->createForm(DonneurType::class, $donneur);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($donneur);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('app_donneur_index', [], Response::HTTP_SEE_OTHER);
+            $data = $form->getData();
+
+            // 🔥 récupération des sous-forms
+            $vivantData = $form->has('vivantData') ? $form->get('vivantData')->getData() : [];
+
+            $decedeData = $form->has('decedeData') ? $form->get('decedeData')->getData() : [];
+
+            // 🔥 payload commun (SANS JSON)
+            $payload = [
+                'groupeSanguin' => $data->getGroupeSanguin(),
+                'sexe' => $data->getSexe(),
+                'dateNaissance' => $data->getDateNaissance(),
+                'taille' => $data->getTaille(),
+                'poids' => $data->getPoids(),
+                'numeroCrista' => $data->getNumeroCrista(),
+            ];
+
+            // 🔥 délégation au service
+            if ($data->getTypeDonneur()?->value === 'vivant') {
+
+                $payload['data'] = [
+                    'vivant' => $vivantData
+                ];
+
+                $donneurService->createDonneurVivant($payload);
+
+            } elseif ($data->getTypeDonneur()?->value === 'decede') {
+
+                $payload['data'] = [
+                    'decede' => $decedeData
+                ];
+
+                $donneurService->createDonneurDecede($payload);
+            }
+
+            return $this->redirectToRoute('donneur_list');
         }
 
-        return $this->render('donneur/new.html.twig', [
-            'donneur' => $donneur,
-            'form' => $form,
+        return $this->render('donneur/create.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_donneur_show', methods: ['GET'])]
     public function show(Donneur $donneur): Response {
