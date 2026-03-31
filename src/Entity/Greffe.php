@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Enum\TypeGreffe;
+use TypeGreffe;
 use App\Repository\GreffeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

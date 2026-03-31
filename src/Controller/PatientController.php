@@ -57,7 +57,7 @@ final class PatientController extends AbstractController {
         Patient $patient
     ): Response {
         if ($patient->getId() && !$this->isGranted(PatientVoter::EDIT, $patient)) {
-            throw $this->createAccessDeniedException('Vous n’êtes pas autorisé à modifier ce patient.');
+            throw $this->createAccessDeniedException('Vous n’êtes pas autorisé à modifier ce patient.'); // mettre une redirection vers la page de consultation du patient ou la liste des patients
         }
 
         $form = $this->createForm(PatientType::class, $patient, [
