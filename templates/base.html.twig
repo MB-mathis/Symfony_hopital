@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}Hôpital{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -14,6 +16,123 @@
 </head>
 
 <body>
-{% block body %}{% endblock %}
+
+{% block body %}
+
+    {# ================= NAVBAR ================= #}
+    <nav class="navbar is-white has-shadow">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}">
+                <strong>🏥 Hopital Manager</strong>
+            </a>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                {% if app.user %}
+                    <span>{{ app.user.prenom ?? app.user.userIdentifier}}</span>
+                {% endif %}
+            </div>
+
+            <div class="navbar-item">
+                <a href="{{ path(constant('App\\Controller\\SecurityController::ROUTE_LOGOUT')) }}" class="button is-light">
+                    Déconnexion
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    {# ================= LAYOUT ================= #}
+    <div class="columns is-gapless" style="min-height: 100vh;">
+
+        {# ===== SIDEBAR ===== #}
+        <div class="column is-2 has-background-dark">
+            <aside class="menu p-4">
+
+                <p class="menu-label has-text-white">Navigation</p>
+
+                <ul class="menu-list">
+
+                    <li>
+                        <a href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}" class="has-text-white">
+                            <i class="fa fa-home"></i> Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path(constant('App\\Controller\\PatientController::ROUTE_LIST')) }}" class="has-text-white">
+                            <i class="fa fa-user-injured"></i> Patients
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}" class="has-text-white">
+                            <i class="fa fa-heart-pulse"></i> Greffes
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_LIST')) }}" class="has-text-white">
+                            <i class="fa fa-hand-holding-medical"></i> Donneurs
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path(constant('App\\Controller\\ChirurgienController::ROUTE_LIST')) }}" class="has-text-white">
+                            <i class="fa fa-user-doctor"></i> Chirurgiens
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path(constant('App\\Controller\\UserController::ROUTE_LIST')) }}" class="has-text-white">
+                            <i class="fa fa-users"></i> Utilisateurs
+                        </a>
+                    </li>
+
+                </ul>
+
+            </aside>
+        </div>
+
+        {# ===== MAIN CONTENT ===== #}
+        <div class="column">
+
+            <section class="section">
+
+                {# FLASH MESSAGES #}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="notification is-{{ label }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {# HEADER PAGE #}
+                <div class="mb-4">
+                    <h1 class="title">
+                        {% block page_title %}{{ block('title') }}{% endblock %}
+                    </h1>
+
+                    <h2 class="subtitle">
+                        {% block page_subtitle %}{% endblock %}
+                    </h2>
+
+                    <div>
+                        {% block page_action %}{% endblock %}
+                    </div>
+                </div>
+
+                {# CONTENT #}
+                {% block page_content %}{% endblock %}
+
+            </section>
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
 </body>
 </html>

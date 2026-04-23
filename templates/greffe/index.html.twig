@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Greffes du dossier {{ dossier.numeroDossier }}{% endblock %}
+{% block title %}Liste des greffes{% endblock %}
 
 {% block body %}
 <section class="section">
     <div class="container">
         <h1 class="title">Greffes</h1>
-        <h2 class="subtitle">Dossier {{ dossier.numeroDossier }}</h2>
 
         <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
@@ -40,10 +39,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
-        <div class="buttons">
-            <a class="button" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_DOSSIER'), {'id': dossier.patient.id}) }}">Retour au dossier</a>
-        </div>
     </div>
 </section>
 {% endblock %}

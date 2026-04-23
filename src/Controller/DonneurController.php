@@ -39,12 +39,12 @@ final class DonneurController extends AbstractController {
 
             $data = $form->getData();
 
-            // 🔥 récupération des sous-forms
+            //  récupération des sous-forms
             $vivantData = $form->has('vivantData') ? $form->get('vivantData')->getData() : [];
 
             $decedeData = $form->has('decedeData') ? $form->get('decedeData')->getData() : [];
 
-            // 🔥 payload commun (SANS JSON)
+            //  payload commun (SANS JSON)
             $payload = [
                 'groupeSanguin' => $data->getGroupeSanguin(),
                 'sexe' => $data->getSexe(),
@@ -54,7 +54,7 @@ final class DonneurController extends AbstractController {
                 'numeroCrista' => $data->getNumeroCrista(),
             ];
 
-            // 🔥 délégation au service
+            // délégation au service
             if ($data->getTypeDonneur()?->value === 'vivant') {
 
                 $payload['data'] = [
@@ -88,7 +88,7 @@ final class DonneurController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}/edit', name: self::ROUTE_UPDATE, methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: self::ROUTE_UPDATE, methods: ['GET', 'POST'])] // mettre la securité du voter 
     public function edit(Request $request, Donneur $donneur, EntityManagerInterface $entityManager): Response {
         $form = $this->createForm(DonneurType::class, $donneur);
         $form->handleRequest($request);
