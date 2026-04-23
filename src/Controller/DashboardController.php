@@ -8,7 +8,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Service\DashboardService;
 
 final class DashboardController extends AbstractController {
-    #[Route('/dashboard', name: 'app_dashboard')]
+    
+    public const ROUTE_INDEX = 'dashboard_index';
+
+    #[Route('/dashboard', name: self::ROUTE_INDEX)]
    public function index(DashboardService $dashboardService): Response
     {
         $data = $dashboardService->getDashboardData();

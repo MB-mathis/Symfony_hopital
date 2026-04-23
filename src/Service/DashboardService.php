@@ -77,9 +77,10 @@ class DashboardService
             [
                 'label' => 'Utilisateurs',
                 'icon' => 'users',
+                'controller' => 'App\\Controller\\UserController',
                 'routes' => [
-                    'list' => 'app_user_index',
-                    'new' => 'app_user_new',
+                    'list' => 'ROUTE_LIST',
+                    'new' => 'ROUTE_CREATE',
                 ],
             ],
             [

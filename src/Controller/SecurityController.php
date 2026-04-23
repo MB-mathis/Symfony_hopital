@@ -8,10 +8,14 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController {
-    #[Route(path: '/', name: 'app_login')]
+    
+    public const ROUTE_LOGIN = 'app_login';
+    public const ROUTE_LOGOUT = 'app_logout';
+
+    #[Route(path: '/', name: self::ROUTE_LOGIN)]
     public function login(AuthenticationUtils $authenticationUtils): Response {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_dashboard');
+            return $this->redirectToRoute(DashboardController::ROUTE_INDEX);
         }
 
         // get the login error if there is one
@@ -22,7 +26,7 @@ class SecurityController extends AbstractController {
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: '/logout', name: self::ROUTE_LOGOUT)]
     public function logout(): void {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
