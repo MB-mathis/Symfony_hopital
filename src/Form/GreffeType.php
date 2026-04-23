@@ -20,13 +20,13 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class GreffeType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             // --- Champs principaux de Greffe ---
             ->add('donneur', EntityType::class, [
                 'class' => Donneur::class,
-                'choice_label' => 'nom', // adapter selon l'attribut du Donneur
+                'choice_label' => 'numeroCrista', // adapter selon l'attribut du Donneur
                 'label' => 'Donneur',
                 'required' => true,
             ])
@@ -52,10 +52,9 @@ class GreffeType extends AbstractType
                 'required' => true,
             ])
             ->add('typeGreffe', ChoiceType::class, [
-                'choices' => array_combine(
-                    array_map(fn($e) => $e->getLabel(), TypeGreffe::cases()),
-                    TypeGreffe::cases()
-                ),
+                'choices' => TypeGreffe::cases(),
+                'choice_label' => fn(TypeGreffe $t) => $t->getLabel(),
+                'choice_value' => fn(?TypeGreffe $t) => $t?->value,
                 'label' => 'Type de greffe',
                 'required' => true,
             ])
@@ -100,7 +99,7 @@ class GreffeType extends AbstractType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'data_class' => Greffe::class,

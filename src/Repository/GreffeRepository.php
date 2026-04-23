@@ -14,6 +14,26 @@ class GreffeRepository extends ServiceEntityRepository
         parent::__construct($registry, Greffe::class);
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('g')
+            ->leftJoin('g.donneur', 'd')->addSelect('d')
+            ->leftJoin('g.groupeHLA', 'hla')->addSelect('hla')
+            ->leftJoin('g.serologie', 's')->addSelect('s')
+            ->leftJoin('g.prelevement', 'p')->addSelect('p')
+            ->leftJoin('g.conditionnementImmunologique', 'c')->addSelect('c')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countGreffes(): int
+    {
+         return $this->createQueryBuilder('g')
+              ->select('COUNT(g.id)')
+              ->getQuery()
+              ->getSingleScalarResult();
+    }
+
     /**
      *  Liste des greffes d’un dossier (historique)
      */

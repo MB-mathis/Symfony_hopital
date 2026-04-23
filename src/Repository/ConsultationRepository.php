@@ -38,4 +38,11 @@ class ConsultationRepository extends ServiceEntityRepository {
 //            ->getOneOrNullResult()
 //        ;
 //    }
+        public function countConsultations(): int
+        {
+            return $this->createQueryBuilder('c')
+                ->select('COUNT(c.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        }
 }

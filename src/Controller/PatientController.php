@@ -45,6 +45,9 @@ final class PatientController extends AbstractController {
 
     #[Route('/{id}', name: 'app_patient_show', methods: ['GET'])]
     public function show(Patient $patient): Response {
+        if (!$this->isGranted(PatientVoter::VIEW, $patient)) {
+            throw $this->createAccessDeniedException('Vous n’êtes pas autorisé à consulter ce patient.'); // mettre une redirection vers la liste des patients
+        }
         return $this->render('patient/show.html.twig', [
             'patient' => $patient,
         ]);
@@ -80,19 +83,38 @@ final class PatientController extends AbstractController {
     }
 
     #[Route('/{id}', name: 'app_patient_delete', methods: ['POST'])]
-    public function delete(Request $request, Patient $patient, EntityManagerInterface $entityManager): Response {
+    public function delete(
+        Request $request,
+        Patient $patient,
+        EntityManagerInterface $em
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $patient->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($patient);
-            $entityManager->flush();
+
+            foreach ($patient->getDossiersMedicaux() as $dossier) {
+                if (count($dossier->getGreffes()) > 0) {
+                    throw new \DomainException('Impossible de supprimer ce patient : des greffes sont associées.');
+                }
+            }
+
+            if (count($patient->getDossiersMedicaux()) > 0) {
+                throw new \DomainException('Impossible de supprimer ce patient : des dossiers médicaux existent.');
+            }
+
+            $em->remove($patient);
+            $em->flush();
         }
 
-        return $this->redirectToRoute('app_patient_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_patient_index');
     }
 
     #[Route('/{id}/dossier', name: 'app_patient_dossier', methods: ['GET'])]
     public function dossier(Patient $patient, DossierMedicalRepository $dossierRepo): Response
     {
-        $dossier = $dossierRepo->findByPatient($patient);
+        if (!$this->isGranted(PatientVoter::VIEW, $patient)) {
+            throw $this->createAccessDeniedException('Vous n’êtes pas autorisé à consulter ce patient.');
+        }
+
+        $dossier = $dossierRepo->findFullByPatient($patient);
 
         if (!$dossier) {
             $this->addFlash('warning', 'Aucun dossier médical trouvé pour ce patient.');

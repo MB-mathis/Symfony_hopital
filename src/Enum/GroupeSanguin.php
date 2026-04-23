@@ -15,4 +15,21 @@ enum GroupeSanguin: string {
     case AB_NEG = 'AB-';
     case O_POS = 'O+';
     case O_NEG = 'O-';
+
+    public function getLabel(): string {
+        return match($this) {
+            self::A => 'A',
+            self::B => 'B',
+            self::AB => 'AB',
+            self::O => 'O',
+            self::A_POS => 'A+',
+            self::A_NEG => 'A-',
+            self::B_POS => 'B+',
+            self::B_NEG => 'B-',
+            self::AB_POS => 'AB+',
+            self::AB_NEG => 'AB-',
+            self::O_POS => 'O+',
+            self::O_NEG => 'O-',
+        };
+    }
 }

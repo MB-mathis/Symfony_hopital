@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Service\DonneurService;
 
 #[Route('/donneur')]
@@ -107,6 +106,6 @@ final class DonneurController extends AbstractController {
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_donneur_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('index.html.twig', [], Response::HTTP_SEE_OTHER);
     }
 }

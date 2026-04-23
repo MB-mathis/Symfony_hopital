@@ -18,6 +18,18 @@ class PatientRepository extends ServiceEntityRepository {
     * @return Patient[] Returns an array of Patient objects
     */
 
+   public function countPatients(): int
+    {
+         return $this->createQueryBuilder('p')
+              ->select('COUNT(p.id)')
+              ->getQuery()
+              ->getSingleScalarResult();
+    }
+    
+     /**
+      * Récupérer les patients créés par un utilisateur ou partagés avec lui
+      * @return Patient[]
+      */
    public function findPatientsByUser(User $user): array
     {
         return $this->createQueryBuilder('p')

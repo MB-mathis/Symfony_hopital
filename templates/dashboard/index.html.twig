@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+
+<section class="section">
+    <div class="container">
+
+        <h1 class="title">Dashboard</h1>
+        <h2 class="subtitle">Vue globale de l'hôpital</h2>
+
+        {# ===================== #}
+        {# 📊 STATS #}
+        {# ===================== #}
+
+        <div class="columns is-multiline">
+
+            <div class="column is-3">
+                <div class="box has-text-centered">
+                    <p class="heading">Patients</p>
+                    <p class="title">{{ data.stats.patients }}</p>
+                </div>
+            </div>
+
+            <div class="column is-3">
+                <div class="box has-text-centered">
+                    <p class="heading">Greffes</p>
+                    <p class="title">{{ data.stats.greffes }}</p>
+                </div>
+            </div>
+
+            <div class="column is-3">
+                <div class="box has-text-centered">
+                    <p class="heading">Donneurs</p>
+                    <p class="title">{{ data.stats.donneurs }}</p>
+                </div>
+            </div>
+
+            <div class="column is-3">
+                <div class="box has-text-centered">
+                    <p class="heading">Chirurgiens</p>
+                    <p class="title">{{ data.stats.chirurgiens }}</p>
+                </div>
+            </div>
+
+            <div class="column is-3">
+                <div class="box has-text-centered">
+                    <p class="heading">Utilisateurs</p>
+                    <p class="title">{{ data.stats.users }}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+
+        {# ===================== #}
+        {# 🚀 MODULES CRUD #}
+        {# ===================== #}
+
+        <h2 class="title is-4">Accès rapide</h2>
+
+        <div class="columns is-multiline">
+
+            {% for module in data.modules %}
+                <div class="column is-4">
+
+                    <div class="card">
+                        <div class="card-content">
+                            <p class="title is-5">
+                                {{ module.label }}
+                            </p>
+
+                            <div class="buttons mt-4">
+
+                                <a href="{{ path(module.routes.list) }}" class="button is-link is-light">
+                                    Voir la liste
+                                </a>
+
+                                {% if module.routes.new is defined %}
+                                    <a href="{{ path(module.routes.new) }}" class="button is-primary">
+                                        Ajouter
+                                    </a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

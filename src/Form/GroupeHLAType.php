@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GroupeHLAType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             ->add('hlaAMismatch', IntegerType::class, ['label' => 'HLA-A Mismatch'])
@@ -20,7 +20,7 @@ class GroupeHLAType extends AbstractType
             ->add('hlaDPMismatch', IntegerType::class, ['label' => 'HLA-DP Mismatch', 'required' => false]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'data_class' => GroupeHLA::class,

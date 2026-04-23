@@ -8,20 +8,80 @@
         <h1 class="title">Dossier Médical</h1>
         <h2 class="subtitle">{{ patient.nom }} {{ patient.prenom }}</h2>
 
+        {# Infos générales du patient / dossier #}
         <div class="box">
             <ul>
                 <li><strong>Numéro de dossier :</strong> {{ dossier.numeroDossier }}</li>
                 <li><strong>Date de création :</strong> {{ dossier.createdAt|date('d/m/Y') }}</li>
                 <li><strong>Sexe :</strong> {{ patient.sexe.value }}</li>
-                <li><strong>Ville :</strong> {{ patient.ville }}</li>
-                <li><strong>IMC :</strong> {{ dossier.imc ?: 'N/A' }}</li>
-                <li><strong>DFG :</strong> {{ dossier.dfg ?: 'N/A' }}</li>
+                <li><strong>Ville :</strong> {{ patient.ville ?: 'N/A' }}</li>
             </ul>
         </div>
 
-        <div class="buttons">
-            <a class="button is-primary" href="{{ path('app_dossier_greffes', {'id': dossier.id}) }}">Voir les greffes</a>
-            <a class="button" href="{{ path('app_patient_index') }}">Retour à la liste</a>
+        {# Greffes et donneurs #}
+        <h2 class="title is-4 mt-6">Greffes</h2>
+        {% if dossier.greffes|length > 0 %}
+            <div class="columns is-multiline">
+                {% for greffe in dossier.greffes %}
+                    <div class="column is-4">
+                        <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Greffe du {{ greffe.dateGreffe|date('d/m/Y') }}
+                                </p>
+                            </header>
+                            <div class="card-content">
+                                <p><strong>Type :</strong> {{ greffe.typeGreffe ? greffe.typeGreffe.value : 'N/A' }}</p>
+                                <p><strong>État :</strong> {{ greffe.greffonFonctionnel ? 'Fonctionnel' : 'Non fonctionnel' }}</p>
+                                <hr>
+                                {% if greffe.donneur %}
+                                    <p><strong>Donneur :</strong> {{ greffe.donneur.numeroCrista }}</p>
+                                    <p><strong>Groupe sanguin :</strong> {{ greffe.donneur.groupeSanguin.value }}</p>
+                                    <p><strong>Sexe :</strong> {{ greffe.donneur.sexe.value }}</p>
+                                    <p><strong>Type :</strong> {{ greffe.donneur.typeDonneur.value }}</p>
+                                    <p><strong>Poids :</strong> {{ greffe.donneur.poids ?: 'N/A' }} kg</p>
+                                    <p><strong>Taille :</strong> {{ greffe.donneur.taille ?: 'N/A' }} cm</p>
+                                    <p><strong>IMC :</strong> {{ greffe.donneur.imc ?: 'N/A' }}</p>
+                                    <p><strong>DFG :</strong> {{ greffe.donneur.dfg ?: 'N/A' }}</p>
+                                    <p><strong>Clairance calculée :</strong> {{ greffe.donneur.clairanceCalculee ?: 'N/A' }}</p>
+                                {% else %}
+                                    <p><em>Donneur non renseigné</em></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucune greffe enregistrée pour ce dossier.</p>
+        {% endif %}
+
+        {# Documents liés au dossier #}
+        <h2 class="title is-4 mt-6">Documents</h2>
+        {% if dossier.documents|length > 0 %}
+            <div class="columns is-multiline">
+                {% for doc in dossier.documents %}
+                    <div class="column is-3">
+                        <div class="card">
+                            <div class="card-content">
+                                <p><strong>{{ doc.nom ?: 'Document sans nom' }}</strong></p>
+                                <p><em>{{ doc.createdAt|date('d/m/Y') }}</em></p>
+                                <a class="button is-small is-link mt-2" href="{{ asset('uploads/documents/' ~ doc.fichier) }}" target="_blank">Voir / Télécharger</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucun document enregistré pour ce dossier.</p>
+        {% endif %}
+
+        {# Boutons d'action #}
+        <div class="buttons mt-6">
+            <a class="button is-primary" href="{{ path('app_patient_index') }}">Retour à la liste des patients</a>
+            {% if dossier.greffes|length > 0 %}
+                <a class="button is-link" href="{{ path('app_dossier_greffes', {'id': dossier.id}) }}">Voir les greffes</a>
+            {% endif %}
         </div>
     </div>
 </section>

@@ -97,7 +97,7 @@
                     <div class="field">
                         <label class="label">Partager avec :</label>
                         <div class="control">
-                            {{ form_widget(form.patientUserShares) }}
+                            {{ include('patient/_collection_patient_user_shares.html.twig', { form: form }) }}
                         </div>
                         {{ form_errors(form.patientUserShares) }}
                     </div>
@@ -117,7 +117,7 @@
         {{ form_end(form) }}
 
         {# Bouton de suppression #}
-        {{ include('patient/_delete_form.html.twig', {'patient': patient}) }}
+        {# {{ include('patient/_delete_form.html.twig', {'patient': patient}) }} #}
     </div>
 </section>
 {% endblock %}

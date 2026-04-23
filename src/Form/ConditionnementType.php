@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConditionnementType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             ->add('risqueImmunologique', ChoiceType::class, [
@@ -35,8 +35,8 @@ class ConditionnementType extends AbstractType
             ->add('commentaireRisqueImmunologique', TextType::class, ['label' => 'Commentaire risque', 'required' => false])
             ->add('commentaireConditionnement', TextType::class, ['label' => 'Commentaire conditionnement', 'required' => false]);
     }
-
-    public function configureOptions(OptionsResolver $resolver)
+    
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'data_class' => ConditionnementImmunologique::class,

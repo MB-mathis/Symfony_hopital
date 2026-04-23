@@ -27,6 +27,7 @@
                         <div class="column is-half"><strong>Téléphone :</strong> {{ patient.telephone }}</div>
                         <div class="column is-half"><strong>Email :</strong> {{ patient.email }}</div>
                         <div class="column is-half"><strong>Créé le :</strong> {{ patient.createdAt ? patient.createdAt|date('d/m/Y H:i') : '' }}</div>
+                        <div class="column is-half"><strong>Créé par :</strong> {{ patient.createdBy ? (patient.createdBy.nom ~ ' ' ~ patient.createdBy.prenom)|trim ?: patient.createdBy.userIdentifier : '' }}</div>
                         <div class="column is-half"><strong>Dernière modification :</strong> {{ patient.updatedAt ? patient.updatedAt|date('d/m/Y H:i') : '' }}</div>
                     </div>
 
@@ -46,9 +47,9 @@
             <footer class="card-footer">
                 <a href="{{ path('app_patient_edit', {'id': patient.id}) }}" class="card-footer-item button is-link is-light">Modifier</a>
                 <a href="{{ path('app_patient_index') }}" class="card-footer-item button is-light">Retour à la liste</a>
-                <span class="card-footer-item">
+                {# <span class="card-footer-item">
                     {{ include('patient/_delete_form.html.twig', {'patient': patient}) }}
-                </span>
+                </span> #}
             </footer>
         </div>
     </div>

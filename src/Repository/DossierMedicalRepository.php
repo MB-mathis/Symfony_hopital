@@ -26,4 +26,25 @@ class DossierMedicalRepository extends ServiceEntityRepository {
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function countDossiers(): int
+    {
+         return $this->createQueryBuilder('d')
+              ->select('COUNT(d.id)')
+              ->getQuery()
+              ->getSingleScalarResult();
+    }
+
+    public function findFullByPatient(Patient $patient): ?DossierMedical
+    {
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.greffes', 'g')      // lier les greffes
+            ->addSelect('g')
+            ->leftJoin('g.donneur', 'donneur') // lier les donneurs
+            ->addSelect('donneur')
+            ->where('d.patient = :patient')
+            ->setParameter('patient', $patient)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

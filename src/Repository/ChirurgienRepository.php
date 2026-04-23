@@ -38,4 +38,11 @@ class ChirurgienRepository extends ServiceEntityRepository {
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function countChirurgiens(): int
+    {
+         return $this->createQueryBuilder('c')
+              ->select('COUNT(c.id)')
+              ->getQuery()
+              ->getSingleScalarResult();
+    }
 }

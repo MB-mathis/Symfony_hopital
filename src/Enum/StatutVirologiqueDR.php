@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Enum;
+
 enum StatutVirologiqueDR: string
 {
     case D_NEG_R_NEG = 'D-/R-';

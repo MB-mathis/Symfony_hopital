@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Enum\StatutVirologiqueToxo;
 use App\Repository\SerologieRepository;
 use Doctrine\ORM\Mapping as ORM;
-use StatutVirologiqueDR;
+use App\Enum\StatutVirologiqueDR;
 
 #[ORM\Entity(repositoryClass: SerologieRepository::class)]
 #[ApiResource]

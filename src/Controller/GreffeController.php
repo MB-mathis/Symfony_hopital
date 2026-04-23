@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\DossierMedical;
+use App\Service\GreffeService;
+
 
 #[Route('/greffe')]
 final class GreffeController extends AbstractController {
@@ -75,11 +77,11 @@ final class GreffeController extends AbstractController {
     }
 
     #[Route('/dossier/{id}/greffes', name: 'app_dossier_greffes', methods: ['GET'])]
-    public function listGreffes(DossierMedical $dossier, GreffeRepository $greffeRepo): Response
+    public function listGreffes(DossierMedical $dossier, GreffeService $greffeService): Response
     {
-        $greffes = $greffeRepo->findByDossier($dossier);
+        $greffes = $greffeService->getGreffesByDossierWithFilters($dossier);
 
-        return $this->render('greffe/index.html.twig', [
+        return $this->render('greffe/by_dossier.html.twig', [
             'dossier' => $dossier,
             'greffes' => $greffes,
         ]);

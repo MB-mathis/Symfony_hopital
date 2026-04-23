@@ -22,14 +22,18 @@ class DonneurType extends AbstractType
     {
         $builder
             ->add('numeroCrista', TextType::class, ['label' => 'Numéro CRISTA'])
-            ->add('groupeSanguin', ChoiceType::class, [
-                'choices' => array_combine(GroupeSanguin::cases(), GroupeSanguin::cases()),
-                'label' => 'Groupe sanguin'
-            ])
             ->add('sexe', ChoiceType::class, [
-                'choices' => array_combine(Sexe::cases(), Sexe::cases()),
+                'choices' => Sexe::cases(),
+                'choice_label' => fn(Sexe $s) => $s->value,
+                'choice_value' => fn(?Sexe $s) => $s?->value,
                 'label' => 'Sexe'
             ])
+            ->add('groupeSanguin', ChoiceType::class, [
+                'choices' => GroupeSanguin::cases(),
+                'choice_label' => fn(GroupeSanguin $g) => $g->value,
+                'choice_value' => fn(?GroupeSanguin $g) => $g?->value,
+                'label' => 'Groupe sanguin'
+                        ])
             ->add('dateNaissance', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date de naissance'

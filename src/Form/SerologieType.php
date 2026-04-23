@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Serologie;
-use StatutVirologiqueDR;
+use App\Enum\StatutVirologiqueDR;
 use App\Enum\StatutVirologiqueToxo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SerologieType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             // --- CMV et EBV via enum StatutVirologiqueDR ---
@@ -44,7 +44,7 @@ class SerologieType extends AbstractType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'data_class' => Serologie::class,

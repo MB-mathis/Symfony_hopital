@@ -20,6 +20,13 @@ class DonneurRepository extends ServiceEntityRepository
         parent::__construct($registry, Donneur::class);
     }
 
+    public function countDonneurs(): int
+    {
+         return $this->createQueryBuilder('d')
+              ->select('COUNT(d.id)')
+              ->getQuery()
+              ->getSingleScalarResult();
+    }
 
 
     /** @return Donneur[] */
