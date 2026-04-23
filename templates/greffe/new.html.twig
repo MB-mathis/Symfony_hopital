@@ -7,5 +7,5 @@
 
     {{ include('greffe/_form.html.twig') }}
 
-    <a href="{{ path('app_greffe_index') }}">back to list</a>
+    <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}">back to list</a>
 {% endblock %}

@@ -15,14 +15,21 @@ use App\Security\Voter\PatientVoter;
 
 #[Route('/patient')]
 final class PatientController extends AbstractController {
-    #[Route(name: 'app_patient_index', methods: ['GET'])]
+    private const ROUTE_LIST = 'patient_list';
+    private const ROUTE_CREATE = 'patient_create';
+    private const ROUTE_UPDATE = 'patient_update';
+    private const ROUTE_DELETE = 'patient_delete';
+    private const ROUTE_SHOW = 'patient_show';
+    private const ROUTE_DOSSIER = 'patient_medical_record';
+
+    #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(PatientRepository $patientRepository): Response {
         return $this->render('patient/index.html.twig', [
             'patients' => $patientRepository->findPatientsByUser($this->getUser()),
         ]);
     }
 
-    #[Route('/new', name: 'app_patient_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: self::ROUTE_CREATE, methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response {
         $patient = new Patient();
         $form = $this->createForm(PatientType::class, $patient,['can_edit_shares' => true,]);
@@ -34,7 +41,7 @@ final class PatientController extends AbstractController {
             $entityManager->persist($patient);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_patient_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('patient/new.html.twig', [
@@ -43,7 +50,7 @@ final class PatientController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}', name: 'app_patient_show', methods: ['GET'])]
+    #[Route('/{id}', name: self::ROUTE_SHOW, methods: ['GET'])]
     public function show(Patient $patient): Response {
         if (!$this->isGranted(PatientVoter::VIEW, $patient)) {
             throw $this->createAccessDeniedException('Vous n’êtes pas autorisé à consulter ce patient.'); // mettre une redirection vers la liste des patients
@@ -53,7 +60,7 @@ final class PatientController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_patient_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: self::ROUTE_UPDATE, methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -73,7 +80,7 @@ final class PatientController extends AbstractController {
             $entityManager->flush();
             $this->addFlash('success', 'Patient mis à jour avec succès.');
 
-            return $this->redirectToRoute('app_patient_index');
+            return $this->redirectToRoute(self::ROUTE_LIST);
         }
 
         return $this->render('patient/edit.html.twig', [
@@ -82,7 +89,7 @@ final class PatientController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}', name: 'app_patient_delete', methods: ['POST'])]
+    #[Route('/{id}', name: self::ROUTE_DELETE, methods: ['POST'])]
     public function delete(
         Request $request,
         Patient $patient,
@@ -104,10 +111,10 @@ final class PatientController extends AbstractController {
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_patient_index');
+        return $this->redirectToRoute(self::ROUTE_LIST);
     }
 
-    #[Route('/{id}/dossier', name: 'app_patient_dossier', methods: ['GET'])]
+    #[Route('/{id}/dossier', name: self::ROUTE_DOSSIER, methods: ['GET'])]
     public function dossier(Patient $patient, DossierMedicalRepository $dossierRepo): Response
     {
         if (!$this->isGranted(PatientVoter::VIEW, $patient)) {
@@ -118,7 +125,7 @@ final class PatientController extends AbstractController {
 
         if (!$dossier) {
             $this->addFlash('warning', 'Aucun dossier médical trouvé pour ce patient.');
-            return $this->redirectToRoute('app_patient_index');
+            return $this->redirectToRoute(self::ROUTE_LIST);
         }
 
         return $this->render('patient/dossier.html.twig', [

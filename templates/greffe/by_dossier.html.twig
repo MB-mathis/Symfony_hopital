@@ -52,12 +52,12 @@
                         <footer class="card-footer">
 
                             {# Voir détail greffe #}
-                            <a href="{{ path('app_greffe_show', {id: greffe.id}) }}" class="card-footer-item">
+                            <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_SHOW'), {id: greffe.id}) }}" class="card-footer-item">
                                 Voir détail
                             </a>
 
                             {# Accès donneur #}
-                            <a href="{{ path('app_donneur_show', {id: greffe.donneur.id}) }}"
+                            <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_SHOW'), {id: greffe.donneur.id}) }}"
                                class="card-footer-item">
                                 Voir donneur
                             </a>

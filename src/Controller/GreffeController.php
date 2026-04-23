@@ -16,14 +16,20 @@ use App\Service\GreffeService;
 
 #[Route('/greffe')]
 final class GreffeController extends AbstractController {
-    #[Route(name: 'app_greffe_index', methods: ['GET'])]
+    private const ROUTE_LIST = 'greffe_list';
+    private const ROUTE_CREATE = 'greffe_create';
+    private const ROUTE_UPDATE = 'greffe_update';
+    private const ROUTE_DELETE = 'greffe_delete';
+    private const ROUTE_SHOW = 'greffe_show';
+
+    #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(GreffeRepository $greffeRepository): Response {
         return $this->render('greffe/index.html.twig', [
             'greffes' => $greffeRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_greffe_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: self::ROUTE_CREATE, methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response {
         $greffe = new Greffe();
         $form = $this->createForm(GreffeType::class, $greffe);
@@ -33,7 +39,7 @@ final class GreffeController extends AbstractController {
             $entityManager->persist($greffe);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_greffe_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('greffe/new.html.twig', [
@@ -42,14 +48,14 @@ final class GreffeController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}', name: 'app_greffe_show', methods: ['GET'])]
+    #[Route('/{id}', name: self::ROUTE_SHOW, methods: ['GET'])]
     public function show(Greffe $greffe): Response {
         return $this->render('greffe/show.html.twig', [
             'greffe' => $greffe,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_greffe_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: self::ROUTE_UPDATE, methods: ['GET', 'POST'])]
     public function edit(Request $request, Greffe $greffe, EntityManagerInterface $entityManager): Response {
         $form = $this->createForm(GreffeType::class, $greffe);
         $form->handleRequest($request);
@@ -57,7 +63,7 @@ final class GreffeController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_greffe_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('greffe/edit.html.twig', [
@@ -66,14 +72,14 @@ final class GreffeController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}', name: 'app_greffe_delete', methods: ['POST'])]
+    #[Route('/{id}', name: self::ROUTE_DELETE, methods: ['POST'])]
     public function delete(Request $request, Greffe $greffe, EntityManagerInterface $entityManager): Response {
         if ($this->isCsrfTokenValid('delete' . $greffe->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($greffe);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_greffe_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/dossier/{id}/greffes', name: 'app_dossier_greffes', methods: ['GET'])]

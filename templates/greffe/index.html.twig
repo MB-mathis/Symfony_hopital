@@ -25,7 +25,7 @@
                     <td>{{ greffe.dateGreffe|date('d/m/Y') }}</td>
                     <td>
                         {% if greffe.donneur %}
-                            <a class="button is-small is-link" href="{{ path('app_donneur_show', {'id': greffe.donneur.id}) }}">
+                            <a class="button is-small is-link" href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_SHOW'), {'id': greffe.donneur.id}) }}">
                                 {{ greffe.donneur.numeroCrista }}
                             </a>
                         {% else %}

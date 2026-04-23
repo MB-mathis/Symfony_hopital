@@ -32,9 +32,9 @@
                     <td>{{ patient.dateNaissance ? patient.dateNaissance|date('d/m/Y') : 'N/A' }}</td>
                     <td>
                         <div class="buttons">
-                            <a class="button is-small is-info" href="{{ path('app_patient_show', {'id': patient.id}) }}">Voir</a>
-                            <a class="button is-small is-warning" href="{{ path('app_patient_edit', {'id': patient.id}) }}">Éditer</a>
-                            <a class="button is-small is-primary" href="{{ path('app_patient_dossier', {'id': patient.id}) }}">Dossier Médical</a>
+                            <a class="button is-small is-info" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_SHOW'), {'id': patient.id}) }}">Voir</a>
+                            <a class="button is-small is-warning" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_UPDATE'), {'id': patient.id}) }}">Éditer</a>
+                            <a class="button is-small is-primary" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_DOSSIER'), {'id': patient.id}) }}">Dossier Médical</a>
                         </div>
                     </td>
                 </tr>
@@ -46,7 +46,7 @@
             </tbody>
         </table>
 
-        <a class="button is-success" href="{{ path('app_patient_new') }}">Ajouter un patient</a>
+        <a class="button is-success" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_CREATE')) }}">Ajouter un patient</a>
     </div>
 </section>
 {% endblock %}

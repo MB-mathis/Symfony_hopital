@@ -43,8 +43,8 @@
                 <td>{{ donneur.dfg }}</td>
                 <td>{{ donneur.clairanceCalculee }}</td>
                 <td>
-                    <a href="{{ path('app_donneur_show', {'id': donneur.id}) }}">show</a>
-                    <a href="{{ path('app_donneur_edit', {'id': donneur.id}) }}">edit</a>
+                    <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_SHOW'), {'id': donneur.id}) }}">show</a>
+                    <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_UPDATE'), {'id': donneur.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -55,5 +55,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_donneur_new') }}">Create new</a>
+    <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_CREATE')) }}">Create new</a>
 {% endblock %}

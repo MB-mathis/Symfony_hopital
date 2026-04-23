@@ -78,7 +78,7 @@
 
         {# Boutons d'action #}
         <div class="buttons mt-6">
-            <a class="button is-primary" href="{{ path('app_patient_index') }}">Retour à la liste des patients</a>
+            <a class="button is-primary" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_LIST')) }}">Retour à la liste des patients</a>
             {% if dossier.greffes|length > 0 %}
                 <a class="button is-link" href="{{ path('app_dossier_greffes', {'id': dossier.id}) }}">Voir les greffes</a>
             {% endif %}

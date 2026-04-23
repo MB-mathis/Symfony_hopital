@@ -15,14 +15,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/dossier/medical')]
 final class DossierMedicalController extends AbstractController {
-    #[Route(name: 'app_dossier_medical_index', methods: ['GET'])]
+    private const ROUTE_LIST = 'dossier_medical_list';
+    private const ROUTE_CREATE = 'dossier_medical_create';
+    private const ROUTE_UPDATE = 'dossier_medical_update';
+    private const ROUTE_DELETE = 'dossier_medical_delete';
+    private const ROUTE_SHOW = 'dossier_medical_show';
+
+    #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(DossierMedicalRepository $dossierMedicalRepository): Response {
         return $this->render('dossier_medical/index.html.twig', [
             'dossier_medicals' => $dossierMedicalRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_dossier_medical_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: self::ROUTE_CREATE, methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response {
         $dossierMedical = new DossierMedical();
         $form = $this->createForm(DossierMedicalType::class, $dossierMedical);
@@ -32,7 +38,7 @@ final class DossierMedicalController extends AbstractController {
             $entityManager->persist($dossierMedical);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_dossier_medical_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('dossier_medical/new.html.twig', [
@@ -41,14 +47,14 @@ final class DossierMedicalController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}', name: 'app_dossier_medical_show', methods: ['GET'])]
+    #[Route('/{id}', name: self::ROUTE_SHOW, methods: ['GET'])]
     public function show(DossierMedical $dossierMedical): Response {
         return $this->render('dossier_medical/show.html.twig', [
             'dossier_medical' => $dossierMedical,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_dossier_medical_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: self::ROUTE_UPDATE, methods: ['GET', 'POST'])]
     public function edit(Request $request, DossierMedical $dossierMedical, EntityManagerInterface $entityManager): Response {
         $form = $this->createForm(DossierMedicalType::class, $dossierMedical);
         $form->handleRequest($request);
@@ -56,7 +62,7 @@ final class DossierMedicalController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_dossier_medical_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('dossier_medical/edit.html.twig', [
@@ -65,13 +71,13 @@ final class DossierMedicalController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}', name: 'app_dossier_medical_delete', methods: ['POST'])]
+    #[Route('/{id}', name: self::ROUTE_DELETE, methods: ['POST'])]
     public function delete(Request $request, DossierMedical $dossierMedical, EntityManagerInterface $entityManager): Response {
         if ($this->isCsrfTokenValid('delete' . $dossierMedical->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($dossierMedical);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_dossier_medical_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
     }
 }

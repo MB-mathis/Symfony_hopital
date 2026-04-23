@@ -7,5 +7,5 @@
 
     {{ include('dossier_medical/_form.html.twig') }}
 
-    <a href="{{ path('app_dossier_medical_index') }}">back to list</a>
+    <a href="{{ path(constant('App\\Controller\\DossierMedicalController::ROUTE_LIST')) }}">back to list</a>
 {% endblock %}

@@ -14,14 +14,20 @@ use App\Service\DonneurService;
 
 #[Route('/donneur')]
 final class DonneurController extends AbstractController {
-    #[Route(name: 'app_donneur_index', methods: ['GET'])]
+    private const ROUTE_LIST = 'donneur_list';
+    private const ROUTE_CREATE = 'donneur_create';
+    private const ROUTE_UPDATE = 'donneur_update';
+    private const ROUTE_DELETE = 'donneur_delete';
+    private const ROUTE_SHOW = 'donneur_show';
+
+    #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(DonneurRepository $donneurRepository): Response {
         return $this->render('donneur/index.html.twig', [
             'donneurs' => $donneurRepository->findAllDonneurs(),
         ]);
     }
 
-    #[Route('/new', name: 'app_donneur_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: self::ROUTE_CREATE, methods: ['GET', 'POST'])]
     public function new(Request $request,
      DonneurService $donneurService
      ): Response {
@@ -66,7 +72,7 @@ final class DonneurController extends AbstractController {
                 $donneurService->createDonneurDecede($payload);
             }
 
-            return $this->redirectToRoute('donneur_list');
+            return $this->redirectToRoute(self::ROUTE_LIST);
         }
 
         return $this->render('donneur/create.html.twig', [
@@ -75,14 +81,14 @@ final class DonneurController extends AbstractController {
     }
 
 
-    #[Route('/{id}', name: 'app_donneur_show', methods: ['GET'])]
+    #[Route('/{id}', name: self::ROUTE_SHOW, methods: ['GET'])]
     public function show(Donneur $donneur): Response {
         return $this->render('donneur/show.html.twig', [
             'donneur' => $donneur,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_donneur_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: self::ROUTE_UPDATE, methods: ['GET', 'POST'])]
     public function edit(Request $request, Donneur $donneur, EntityManagerInterface $entityManager): Response {
         $form = $this->createForm(DonneurType::class, $donneur);
         $form->handleRequest($request);
@@ -90,7 +96,7 @@ final class DonneurController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_donneur_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('donneur/edit.html.twig', [
@@ -99,13 +105,13 @@ final class DonneurController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}', name: 'app_donneur_delete', methods: ['POST'])]
+    #[Route('/{id}', name: self::ROUTE_DELETE, methods: ['POST'])]
     public function delete(Request $request, Donneur $donneur, EntityManagerInterface $entityManager): Response {
         if ($this->isCsrfTokenValid('delete' . $donneur->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($donneur);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('index.html.twig', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
     }
 }

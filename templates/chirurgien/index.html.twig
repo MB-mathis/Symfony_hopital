@@ -25,8 +25,8 @@
                 <td>{{ chirurgien.createdAt ? chirurgien.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ chirurgien.updatedAt ? chirurgien.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_chirurgien_show', {'id': chirurgien.id}) }}">show</a>
-                    <a href="{{ path('app_chirurgien_edit', {'id': chirurgien.id}) }}">edit</a>
+                    <a href="{{ path(constant('App\\Controller\\ChirurgienController::ROUTE_SHOW'), {'id': chirurgien.id}) }}">show</a>
+                    <a href="{{ path(constant('App\\Controller\\ChirurgienController::ROUTE_UPDATE'), {'id': chirurgien.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +37,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_chirurgien_new') }}">Create new</a>
+    <a href="{{ path(constant('App\\Controller\\ChirurgienController::ROUTE_CREATE')) }}">Create new</a>
 {% endblock %}
