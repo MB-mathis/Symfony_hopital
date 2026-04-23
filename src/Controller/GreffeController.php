@@ -16,11 +16,12 @@ use App\Service\GreffeService;
 
 #[Route('/greffe')]
 final class GreffeController extends AbstractController {
-    private const ROUTE_LIST = 'greffe_list';
-    private const ROUTE_CREATE = 'greffe_create';
-    private const ROUTE_UPDATE = 'greffe_update';
-    private const ROUTE_DELETE = 'greffe_delete';
-    private const ROUTE_SHOW = 'greffe_show';
+    public const ROUTE_LIST = 'greffe_list';
+    public const ROUTE_CREATE = 'greffe_create';
+    public const ROUTE_UPDATE = 'greffe_update';
+    public const ROUTE_DELETE = 'greffe_delete';
+    public const ROUTE_SHOW = 'greffe_show';
+    public const ROUTE_DOSSIER_GREFFES = 'greffe_by_dossier';
 
     #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(GreffeRepository $greffeRepository): Response {
@@ -82,7 +83,7 @@ final class GreffeController extends AbstractController {
         return $this->redirectToRoute(self::ROUTE_LIST, [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/dossier/{id}/greffes', name: 'app_dossier_greffes', methods: ['GET'])]
+    #[Route('/dossier/{id}/greffes', name: self::ROUTE_DOSSIER_GREFFES, methods: ['GET'])]
     public function listGreffes(DossierMedical $dossier, GreffeService $greffeService): Response
     {
         $greffes = $greffeService->getGreffesByDossierWithFilters($dossier);

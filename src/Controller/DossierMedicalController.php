@@ -15,11 +15,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/dossier/medical')]
 final class DossierMedicalController extends AbstractController {
-    private const ROUTE_LIST = 'dossier_medical_list';
-    private const ROUTE_CREATE = 'dossier_medical_create';
-    private const ROUTE_UPDATE = 'dossier_medical_update';
-    private const ROUTE_DELETE = 'dossier_medical_delete';
-    private const ROUTE_SHOW = 'dossier_medical_show';
+    public const ROUTE_LIST = 'dossier_medical_list';
+    public const ROUTE_CREATE = 'dossier_medical_create';
+    public const ROUTE_UPDATE = 'dossier_medical_update';
+    public const ROUTE_DELETE = 'dossier_medical_delete';
+    public const ROUTE_SHOW = 'dossier_medical_show';
 
     #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(DossierMedicalRepository $dossierMedicalRepository): Response {

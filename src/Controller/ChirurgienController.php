@@ -13,11 +13,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/chirurgien')]
 final class ChirurgienController extends AbstractController {
-    private const ROUTE_LIST = 'chirurgien_list';
-    private const ROUTE_CREATE = 'chirurgien_create';
-    private const ROUTE_UPDATE = 'chirurgien_update';
-    private const ROUTE_DELETE = 'chirurgien_delete';
-    private const ROUTE_SHOW = 'chirurgien_show';
+    public const ROUTE_LIST = 'chirurgien_list';
+    public const ROUTE_CREATE = 'chirurgien_create';
+    public const ROUTE_UPDATE = 'chirurgien_update';
+    public const ROUTE_DELETE = 'chirurgien_delete';
+    public const ROUTE_SHOW = 'chirurgien_show';
 
     #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(ChirurgienRepository $chirurgienRepository): Response {

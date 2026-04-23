@@ -42,7 +42,7 @@
         </table>
 
         <div class="buttons">
-            <a class="button" href="{{ path('app_patient_dossier', {'id': dossier.patient.id}) }}">Retour au dossier</a>
+            <a class="button" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_DOSSIER'), {'id': dossier.patient.id}) }}">Retour au dossier</a>
         </div>
     </div>
 </section>

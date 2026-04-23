@@ -74,14 +74,26 @@
 
                             <div class="buttons mt-4">
 
-                                <a href="{{ path(module.routes.list) }}" class="button is-link is-light">
-                                    Voir la liste
-                                </a>
-
-                                {% if module.routes.new is defined %}
-                                    <a href="{{ path(module.routes.new) }}" class="button is-primary">
-                                        Ajouter
+                                {% if module.controller is defined %}
+                                    <a href="{{ path(constant(module.controller ~ '::' ~ module.routes.list)) }}" class="button is-link is-light">
+                                        Voir la liste
                                     </a>
+
+                                    {% if module.routes.new is defined %}
+                                        <a href="{{ path(constant(module.controller ~ '::' ~ module.routes.new)) }}" class="button is-primary">
+                                            Ajouter
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{ path(module.routes.list) }}" class="button is-link is-light">
+                                        Voir la liste
+                                    </a>
+
+                                    {% if module.routes.new is defined %}
+                                        <a href="{{ path(module.routes.new) }}" class="button is-primary">
+                                            Ajouter
+                                        </a>
+                                    {% endif %}
                                 {% endif %}
 
                             </div>

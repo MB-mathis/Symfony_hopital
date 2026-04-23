@@ -15,12 +15,12 @@ use App\Security\Voter\PatientVoter;
 
 #[Route('/patient')]
 final class PatientController extends AbstractController {
-    private const ROUTE_LIST = 'patient_list';
-    private const ROUTE_CREATE = 'patient_create';
-    private const ROUTE_UPDATE = 'patient_update';
-    private const ROUTE_DELETE = 'patient_delete';
-    private const ROUTE_SHOW = 'patient_show';
-    private const ROUTE_DOSSIER = 'patient_medical_record';
+    public const ROUTE_LIST = 'patient_list';
+    public const ROUTE_CREATE = 'patient_create';
+    public const ROUTE_UPDATE = 'patient_update';
+    public const ROUTE_DELETE = 'patient_delete';
+    public const ROUTE_SHOW = 'patient_show';
+    public const ROUTE_DOSSIER = 'patient_medical_record';
 
     #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(PatientRepository $patientRepository): Response {

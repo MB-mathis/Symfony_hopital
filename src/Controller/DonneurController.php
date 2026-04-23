@@ -14,11 +14,11 @@ use App\Service\DonneurService;
 
 #[Route('/donneur')]
 final class DonneurController extends AbstractController {
-    private const ROUTE_LIST = 'donneur_list';
-    private const ROUTE_CREATE = 'donneur_create';
-    private const ROUTE_UPDATE = 'donneur_update';
-    private const ROUTE_DELETE = 'donneur_delete';
-    private const ROUTE_SHOW = 'donneur_show';
+    public const ROUTE_LIST = 'donneur_list';
+    public const ROUTE_CREATE = 'donneur_create';
+    public const ROUTE_UPDATE = 'donneur_update';
+    public const ROUTE_DELETE = 'donneur_delete';
+    public const ROUTE_SHOW = 'donneur_show';
 
     #[Route(name: self::ROUTE_LIST, methods: ['GET'])]
     public function index(DonneurRepository $donneurRepository): Response {

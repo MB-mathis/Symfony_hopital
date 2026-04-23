@@ -43,31 +43,35 @@ class DashboardService
             [
                 'label' => 'Patients',
                 'icon' => 'user',
+                'controller' => 'App\\Controller\\PatientController',
                 'routes' => [
-                    'list' => 'app_patient_index',
-                    'new' => 'app_patient_new',
+                    'list' => 'ROUTE_LIST',
+                    'new' => 'ROUTE_CREATE',
                 ],
             ],
             [
                 'label' => 'Greffes',
                 'icon' => 'heart',
+                'controller' => 'App\\Controller\\GreffeController',
                 'routes' => [
-                    'list' => 'app_greffe_index',
+                    'list' => 'ROUTE_LIST',
                 ],
             ],
             [
                 'label' => 'Donneurs',
                 'icon' => 'dna',
+                'controller' => 'App\\Controller\\DonneurController',
                 'routes' => [
-                    'list' => 'app_donneur_index',
-                    'new' => 'app_donneur_new',
+                    'list' => 'ROUTE_LIST',
+                    'new' => 'ROUTE_CREATE',
                 ],
             ],
             [
                 'label' => 'Dossiers médicaux',
                 'icon' => 'file',
+                'controller' => 'App\\Controller\\DossierMedicalController',
                 'routes' => [
-                    'list' => 'app_dossier_medical_index',
+                    'list' => 'ROUTE_LIST',
                 ],
             ],
             [
@@ -81,8 +85,9 @@ class DashboardService
             [
                 'label' => 'Chirurgiens',
                 'icon' => 'user-md',
+                'controller' => 'App\\Controller\\ChirurgienController',
                 'routes' => [
-                    'list' => 'app_chirurgien_index',
+                    'list' => 'ROUTE_LIST',
                 ],
             ],
         ];
