@@ -19,97 +19,104 @@
 
 {% block body %}
 
-    {# ================= NAVBAR ================= #}
-    <nav class="navbar is-white has-shadow">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}">
-                <strong>🏥 Hopital Manager</strong>
-            </a>
-        </div>
+{# ================= NAVBAR ================= #}
+<nav class="navbar is-white has-shadow is-fixed-top">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}">
+            <strong>🏥 Hopital Manager</strong>
+        </a>
+    </div>
 
-        <div class="navbar-end">
+    <div class="navbar-end pr-4">
+        {% if app.user %}
             <div class="navbar-item">
-                {% if app.user %}
-                    <span>{{ app.user.prenom ?? app.user.userIdentifier}}</span>
-                {% endif %}
+                {{ app.user.prenom ?? app.user.userIdentifier }}
             </div>
 
             <div class="navbar-item">
-                <a href="{{ path(constant('App\\Controller\\SecurityController::ROUTE_LOGOUT')) }}" class="button is-light">
+                <a href="{{ path(constant('App\\Controller\\SecurityController::ROUTE_LOGOUT')) }}">
                     Déconnexion
                 </a>
             </div>
-        </div>
-    </nav>
+        {% else %}
+            <div class="navbar-item">
+                <a href="{{ path(constant('App\\Controller\\SecurityController::ROUTE_LOGIN')) }}">
+                    Connexion
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</nav>
 
-    {# ================= LAYOUT ================= #}
-    <div class="columns is-gapless" style="min-height: 100vh;">
+{# ================= LAYOUT ================= #}
+<div class="columns is-gapless" style="margin-top: 3.25rem; height: calc(100vh - 3.25rem);">
 
-        {# ===== SIDEBAR ===== #}
-        <div class="column is-2 has-background-dark">
-            <aside class="menu p-4">
+    {# ===== SIDEBAR ===== #}
+    <div class="column is-2 has-background-dark" style="overflow-y: auto;">
+        <aside class="menu p-4">
 
-                <p class="menu-label has-text-white">Navigation</p>
+            <p class="menu-label has-text-white">Navigation</p>
 
-                <ul class="menu-list">
+            <ul class="menu-list">
 
-                    <li>
-                        <a href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}" class="has-text-white">
-                            <i class="fa fa-home"></i> Dashboard
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}" class="has-text-white">
+                        Dashboard
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="{{ path(constant('App\\Controller\\PatientController::ROUTE_LIST')) }}" class="has-text-white">
-                            <i class="fa fa-user-injured"></i> Patients
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ path(constant('App\\Controller\\PatientController::ROUTE_LIST')) }}" class="has-text-white">
+                        Patients
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}" class="has-text-white">
-                            <i class="fa fa-heart-pulse"></i> Greffes
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}" class="has-text-white">
+                        Greffes
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_LIST')) }}" class="has-text-white">
-                            <i class="fa fa-hand-holding-medical"></i> Donneurs
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_LIST')) }}" class="has-text-white">
+                        Donneurs
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="{{ path(constant('App\\Controller\\ChirurgienController::ROUTE_LIST')) }}" class="has-text-white">
-                            <i class="fa fa-user-doctor"></i> Chirurgiens
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ path(constant('App\\Controller\\ChirurgienController::ROUTE_LIST')) }}" class="has-text-white">
+                        Chirurgiens
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="{{ path(constant('App\\Controller\\UserController::ROUTE_LIST')) }}" class="has-text-white">
-                            <i class="fa fa-users"></i> Utilisateurs
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ path(constant('App\\Controller\\UserController::ROUTE_LIST')) }}" class="has-text-white">
+                        Utilisateurs
+                    </a>
+                </li>
 
-                </ul>
+            </ul>
 
-            </aside>
-        </div>
+        </aside>
+    </div>
 
-        {# ===== MAIN CONTENT ===== #}
-        <div class="column">
+    {# ===== MAIN CONTENT ===== #}
+    <div class="column" style="overflow-y: auto;">
 
-            <section class="section">
+        <div class="p-5">
 
-                {# FLASH MESSAGES #}
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="notification is-{{ label }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
+            {# FLASH #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="notification is-{{ label }}">
+                        {{ message }}
+                    </div>
                 {% endfor %}
+            {% endfor %}
 
-                {# HEADER PAGE #}
-                <div class="mb-4">
+            {# HEADER PAGE #}
+            <div class="mb-5 is-flex is-justify-content-space-between is-align-items-center">
+                <div>
                     <h1 class="title">
                         {% block page_title %}{{ block('title') }}{% endblock %}
                     </h1>
@@ -117,20 +124,21 @@
                     <h2 class="subtitle">
                         {% block page_subtitle %}{% endblock %}
                     </h2>
-
-                    <div>
-                        {% block page_action %}{% endblock %}
-                    </div>
                 </div>
 
-                {# CONTENT #}
-                {% block page_content %}{% endblock %}
+                <div>
+                    {% block page_action %}{% endblock %}
+                </div>
+            </div>
 
-            </section>
+            {# CONTENT FULL WIDTH #}
+            {% block page_content %}{% endblock %}
 
         </div>
 
     </div>
+
+</div>
 
 {% endblock %}
 

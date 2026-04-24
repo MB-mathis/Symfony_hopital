@@ -12,7 +12,7 @@ class SecurityController extends AbstractController {
     public const ROUTE_LOGIN = 'app_login';
     public const ROUTE_LOGOUT = 'app_logout';
 
-    #[Route(path: '/', name: self::ROUTE_LOGIN)]
+    #[Route(path: '/login', name: self::ROUTE_LOGIN)]
     public function login(AuthenticationUtils $authenticationUtils): Response {
         if ($this->getUser()) {
             return $this->redirectToRoute(DashboardController::ROUTE_INDEX);
@@ -29,5 +29,11 @@ class SecurityController extends AbstractController {
     #[Route(path: '/logout', name: self::ROUTE_LOGOUT)]
     public function logout(): void {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route('/', name: 'home')]
+    public function home(): Response
+    {
+        return $this->redirectToRoute(SecurityController::ROUTE_LOGIN);
     }
 }

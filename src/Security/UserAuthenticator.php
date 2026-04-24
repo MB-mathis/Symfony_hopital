@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use App\Controller\DashboardController;
 
 class UserAuthenticator extends AbstractLoginFormAuthenticator {
     use TargetPathTrait;
@@ -48,10 +49,10 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator {
 
         // redirection selon rôle
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
-            return new RedirectResponse($this->urlGenerator->generate('app_test_bulma'));
+            return new RedirectResponse($this->urlGenerator->generate(DashboardController::ROUTE_INDEX));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('app_test_bulma'));
+        return new RedirectResponse($this->urlGenerator->generate(DashboardController::ROUTE_INDEX));
     }
 
     protected function getLoginUrl(Request $request): string {

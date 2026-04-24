@@ -20,4 +20,5 @@ final class DashboardController extends AbstractController {
             'data' => $data,
         ]);
     }
+
 }
