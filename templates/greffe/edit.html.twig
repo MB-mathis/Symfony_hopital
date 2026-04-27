@@ -1,13 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Greffe{% endblock %}
+{% block title %}Modifier une greffe{% endblock %}
+
+{% block page_title %}
+    Modifier la greffe #{{ greffe.id }}
+{% endblock %}
+
+{% block page_action %}
+    <div class="buttons">
+        <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}" class="button is-light">
+            Retour
+        </a>
+
+        {{ include('greffe/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
 
 {% block page_content %}
-    <h1>Edit Greffe</h1>
 
-    {{ include('greffe/_form.html.twig', {'button_label': 'Update'}) }}
+    <section>
+        {{ include('greffe/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    </section>
 
-    <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}">back to list</a>
-
-    {{ include('greffe/_delete_form.html.twig') }}
 {% endblock %}

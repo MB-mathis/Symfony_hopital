@@ -1,0 +1,139 @@
+{# =========================================================
+   ULTRA PRO BULMA FORM THEME - SAAS READY (SYMFONY)
+   ========================================================= #}
+
+{# ===================== GLOBAL ROW ===================== #}
+{% block form_row %}
+    <div class="field mb-4">
+        {% if label is not same as(false) %}
+            {{ form_label(form, null, {
+                label_attr: {
+                    class: 'label has-text-weight-semibold'
+                }
+            }) }}
+        {% endif %}
+
+        <div class="control">
+            {{ form_widget(form) }}
+        </div>
+
+        {% if form_errors(form) %}
+            <p class="help is-danger">
+                {{ form_errors(form) }}
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{# ===================== INPUT TEXT / NUMBER ===================== #}
+{% block form_widget_simple %}
+    {% set type = type|default('text') %}
+
+    <input
+        type="{{ type }}"
+        {{ block('widget_attributes') }}
+        class="input is-fullwidth
+        {% if errors|length > 0 %} is-danger {% endif %}"
+        value="{{ value }}"
+    />
+{% endblock %}
+
+{# ===================== TEXTAREA ===================== #}
+{% block textarea_widget %}
+    <textarea
+        {{ block('widget_attributes') }}
+        class="textarea is-fullwidth
+        {% if errors|length > 0 %} is-danger {% endif %}"
+    >{{ value }}</textarea>
+{% endblock %}
+
+{# ===================== SELECT (Choice + EntityType) ===================== #}
+{% block choice_widget_collapsed %}
+    <div class="select is-fullwidth
+        {% if errors|length > 0 %} is-danger {% endif %}">
+        <select {{ block('widget_attributes') }}>
+            {% if placeholder %}
+                <option value="">{{ placeholder }}</option>
+            {% endif %}
+
+            {% for choice in choices %}
+                <option value="{{ choice.value }}"
+                    {% if choice is selectedchoice(value) %}selected{% endif %}>
+                    {{ choice.label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+{% endblock %}
+
+{# ===================== CHECKBOX (TOGGLE SAAS STYLE) ===================== #}
+{% block checkbox_widget %}
+    <label class="checkbox is-flex is-align-items-center gap-2">
+        {{ form_widget(form) }}
+        <span class="ml-2">
+            {{ form_label(form) }}
+        </span>
+    </label>
+{% endblock %}
+
+{# ===================== RADIO ===================== #}
+{% block radio_widget %}
+    <label class="radio">
+        {{ form_widget(form) }}
+        {{ form_label(form) }}
+    </label>
+{% endblock %}
+
+{# ===================== DATE ===================== #}
+{% block date_widget %}
+    <input
+        type="date"
+        class="input is-fullwidth"
+        {{ block('widget_attributes') }}
+    />
+{% endblock %}
+
+{# ===================== DATETIME ===================== #}
+{% block datetime_widget %}
+    <input
+        type="datetime-local"
+        class="input is-fullwidth"
+        {{ block('widget_attributes') }}
+    />
+{% endblock %}
+
+{# ===================== INTEGER / NUMBER ===================== #}
+{% block integer_widget %}
+    <input
+        type="number"
+        class="input is-fullwidth"
+        {{ block('widget_attributes') }}
+    />
+{% endblock %}
+
+{# ===================== FORM ERRORS GLOBAL ===================== #}
+{% block form_errors %}
+    {% if errors|length > 0 %}
+        <ul class="help is-danger mt-1">
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{# ===================== COLLECTION (SUBFORMS) ===================== #}
+{% block collection_widget %}
+    <div class="box has-background-light">
+        {{ block('form_widget') }}
+    </div>
+{% endblock %}
+
+{# ===================== LABEL ===================== #}
+{% block form_label %}
+    {% if label is not same as(false) %}
+        <label class="label">
+            {{ label|trans }}
+        </label>
+    {% endif %}
+{% endblock %}

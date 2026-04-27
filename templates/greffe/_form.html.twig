@@ -1,4 +1,156 @@
+{# =========================================================
+   GREFFE FORM - SAAS HOSPITAL UI (BULMA CARDS)
+   ========================================================= #}
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+{# ================= CARD 1 : IDENTITÉ ================= #}
+{% include 'form/_form_card_start.html.twig' with {
+    title: 'Identification de la greffe',
+    subtitle: 'Informations administratives et médicales principales'
+} %}
+
+<div class="column is-6">
+    {{ form_row(form.donneur) }}
+</div>
+
+<div class="column is-6">
+    {{ form_row(form.dossierMedical) }}
+</div>
+
+<div class="column is-6">
+    {{ form_row(form.chirurgien) }}
+</div>
+
+<div class="column is-3">
+    {{ form_row(form.dateGreffe) }}
+</div>
+
+<div class="column is-3">
+    {{ form_row(form.rangGreffe) }}
+</div>
+
+{% include 'form/_form_card_end.html.twig' %}
+
+
+{# ================= CARD 2 : TYPE GREFFE ================= #}
+{% include 'form/_form_card_start.html.twig' with {
+    title: 'Type de greffe',
+    subtitle: 'Caractéristiques de la transplantation'
+} %}
+
+<div class="column is-4">
+    {{ form_row(form.typeGreffe) }}
+</div>
+
+<div class="column is-4">
+    {{ form_row(form.greffonFonctionnel) }}
+</div>
+
+<div class="column is-4">
+    {{ form_row(form.dialyse) }}
+</div>
+
+<div class="column is-4">
+    {{ form_row(form.protocole) }}
+</div>
+
+{% include 'form/_form_card_end.html.twig' %}
+
+
+{# ================= CARD 3 : SUIVI ================= #}
+{% include 'form/_form_card_start.html.twig' with {
+    title: 'Suivi du greffon',
+    subtitle: 'Évolution et fin de fonction'
+} %}
+
+<div class="column is-6">
+    {{ form_row(form.dateFinFonctionGreffon) }}
+</div>
+
+<div class="column is-6">
+    {{ form_row(form.causeFinFonctionGreffon) }}
+</div>
+
+{% include 'form/_form_card_end.html.twig' %}
+
+
+{# ================= CARD 4 : PRÉLÈVEMENT ================= #}
+{% include 'form/_form_card_start.html.twig' with {
+    title: 'Prélèvement',
+    subtitle: 'Données opératoires du prélèvement'
+} %}
+
+<div class="column is-12">
+    {{ form_row(form.prelevement) }}
+</div>
+
+{% include 'form/_form_card_end.html.twig' %}
+
+
+{# ================= CARD 5 : SÉROLOGIE ================= #}
+{% include 'form/_form_card_start.html.twig' with {
+    title: 'Sérologie',
+    subtitle: 'Statuts virologiques'
+} %}
+
+<div class="column is-12">
+    {{ form_row(form.serologie) }}
+</div>
+
+{% include 'form/_form_card_end.html.twig' %}
+
+
+{# ================= CARD 6 : CONDITIONNEMENT ================= #}
+{% include 'form/_form_card_start.html.twig' with {
+    title: 'Conditionnement immunologique',
+    subtitle: 'Risque et immunosuppression'
+} %}
+
+<div class="column is-12">
+    {{ form_row(form.conditionnementImmunologique) }}
+</div>
+
+{% include 'form/_form_card_end.html.twig' %}
+
+
+{# ================= CARD 7 : HLA ================= #}
+{% include 'form/_form_card_start.html.twig' with {
+    title: 'Compatibilité HLA',
+    subtitle: 'Mismatch immunologique'
+} %}
+
+<div class="column is-12">
+    {{ form_row(form.groupeHLA) }}
+</div>
+
+{% include 'form/_form_card_end.html.twig' %}
+
+
+{# ================= ACTIONS ================= #}
+<div class="mt-5 is-flex is-justify-content-space-between">
+
+    {% if form.vars.data.id %}
+        <button class="button is-primary is-medium">
+            Mettre à jour
+        </button>
+    {% else %}
+        <button class="button is-primary is-medium">
+            Créer la greffe
+        </button>
+    {% endif %}
+
+    <div class="is-flex gap-2">
+        <a class="button is-light" href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}">
+            Retour
+        </a>
+
+        {% if form.vars.data.id is not null %}
+            {{ include('greffe/_delete_form.html.twig') }}
+        {% endif %}
+
+    </div>
+
+</div>
+
 {{ form_end(form) }}

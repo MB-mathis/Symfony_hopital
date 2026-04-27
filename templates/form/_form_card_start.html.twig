@@ -1,0 +1,26 @@
+{# =========================================================
+   FORM CARD START - SAAS UI (BULMA)
+   Utilisé pour structurer les formulaires en sections
+   ========================================================= #}
+
+<div class="box mb-5">
+
+    {# ================= HEADER DE SECTION ================= #}
+    {% if title is defined and title is not empty %}
+        <div class="mb-4">
+            <h2 class="title is-5 has-text-weight-semibold">
+                {{ title }}
+            </h2>
+
+            {% if subtitle is defined and subtitle is not empty %}
+                <p class="subtitle is-6 has-text-grey">
+                    {{ subtitle }}
+                </p>
+            {% endif %}
+        </div>
+
+        <hr class="has-background-grey-lighter">
+    {% endif %}
+
+    {# ================= CONTENT START ================= #}
+    <div class="columns is-multiline">

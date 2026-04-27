@@ -4,108 +4,111 @@
 
 {% block page_content %}
 
-<section class="section">
-    <div class="container">
+{# ===================== #}
+{# HEADER DASHBOARD #}
+{# ===================== #}
 
-        <h1 class="title">Dashboard</h1>
-        <h2 class="subtitle">Vue globale de l'hôpital</h2>
+{# <div class="mb-5">
+    <h1 class="title">Dashboard</h1>
+    <p class="subtitle">Vue globale de l'hôpital</p>
+</div> #}
 
-        {# ===================== #}
-        {# 📊 STATS #}
-        {# ===================== #}
+{# ===================== #}
+{# 📊 STATS #}
+{# ===================== #}
 
-        <div class="columns is-multiline">
+<div class="columns is-multiline">
 
-            <div class="column is-3">
-                <div class="box has-text-centered">
-                    <p class="heading">Patients</p>
-                    <p class="title">{{ data.stats.patients }}</p>
-                </div>
-            </div>
-
-            <div class="column is-3">
-                <div class="box has-text-centered">
-                    <p class="heading">Greffes</p>
-                    <p class="title">{{ data.stats.greffes }}</p>
-                </div>
-            </div>
-
-            <div class="column is-3">
-                <div class="box has-text-centered">
-                    <p class="heading">Donneurs</p>
-                    <p class="title">{{ data.stats.donneurs }}</p>
-                </div>
-            </div>
-
-            <div class="column is-3">
-                <div class="box has-text-centered">
-                    <p class="heading">Chirurgiens</p>
-                    <p class="title">{{ data.stats.chirurgiens }}</p>
-                </div>
-            </div>
-
-            <div class="column is-3">
-                <div class="box has-text-centered">
-                    <p class="heading">Utilisateurs</p>
-                    <p class="title">{{ data.stats.users }}</p>
-                </div>
-            </div>
-
+    <div class="column is-3">
+        <div class="box is-card has-text-centered">
+            <p class="heading">Patients</p>
+            <p class="title">{{ data.stats.patients }}</p>
         </div>
-
-        <hr>
-
-        {# ===================== #}
-        {# 🚀 MODULES CRUD #}
-        {# ===================== #}
-
-        <h2 class="title is-4">Accès rapide</h2>
-
-        <div class="columns is-multiline">
-
-            {% for module in data.modules %}
-                <div class="column is-4">
-
-                    <div class="card">
-                        <div class="card-content">
-                            <p class="title is-5">
-                                {{ module.label }}
-                            </p>
-
-                            <div class="buttons mt-4">
-
-                                {% if module.controller is defined %}
-                                    <a href="{{ path(constant(module.controller ~ '::' ~ module.routes.list)) }}" class="button is-link is-light">
-                                        Voir la liste
-                                    </a>
-
-                                    {% if module.routes.new is defined %}
-                                        <a href="{{ path(constant(module.controller ~ '::' ~ module.routes.new)) }}" class="button is-primary">
-                                            Ajouter
-                                        </a>
-                                    {% endif %}
-                                {% else %}
-                                    <a href="{{ path(module.routes.list) }}" class="button is-link is-light">
-                                        Voir la liste
-                                    </a>
-
-                                    {% if module.routes.new is defined %}
-                                        <a href="{{ path(module.routes.new) }}" class="button is-primary">
-                                            Ajouter
-                                        </a>
-                                    {% endif %}
-                                {% endif %}
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            {% endfor %}
-
-        </div>
-
     </div>
-</section>
+
+    <div class="column is-3">
+        <div class="box is-card has-text-centered">
+            <p class="heading">Greffes</p>
+            <p class="title">{{ data.stats.greffes }}</p>
+        </div>
+    </div>
+
+    <div class="column is-3">
+        <div class="box is-card has-text-centered">
+            <p class="heading">Donneurs</p>
+            <p class="title">{{ data.stats.donneurs }}</p>
+        </div>
+    </div>
+
+    <div class="column is-3">
+        <div class="box is-card has-text-centered">
+            <p class="heading">Chirurgiens</p>
+            <p class="title">{{ data.stats.chirurgiens }}</p>
+        </div>
+    </div>
+
+    <div class="column is-3">
+        <div class="box is-card has-text-centered">
+            <p class="heading">Utilisateurs</p>
+            <p class="title">{{ data.stats.users }}</p>
+        </div>
+    </div>
+
+</div>
+
+{# ===================== #}
+{# 🚀 ACCÈS RAPIDE #}
+{# ===================== #}
+
+<h2 class="title is-4 mb-4">Accès rapide</h2>
+
+<div class="columns is-multiline">
+
+    {% for module in data.modules %}
+        <div class="column is-4">
+
+            <div class="box is-card">
+
+                <p class="title is-5 mb-4">
+                    {{ module.label }}
+                </p>
+
+                <div class="buttons">
+
+                    {% if module.controller is defined %}
+                        <a href="{{ path(constant(module.controller ~ '::' ~ module.routes.list)) }}"
+                           class="button is-link is-light">
+                            Liste
+                        </a>
+
+                        {% if module.routes.new is defined %}
+                            <a href="{{ path(constant(module.controller ~ '::' ~ module.routes.new)) }}"
+                               class="button is-primary">
+                                Ajouter
+                            </a>
+                        {% endif %}
+
+                    {% else %}
+                        <a href="{{ path(module.routes.list) }}"
+                           class="button is-link is-light">
+                            Liste
+                        </a>
+
+                        {% if module.routes.new is defined %}
+                            <a href="{{ path(module.routes.new) }}"
+                               class="button is-primary">
+                                Ajouter
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+    {% endfor %}
+
+</div>
 
 {% endblock %}

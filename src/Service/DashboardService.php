@@ -55,6 +55,7 @@ class DashboardService
                 'controller' => 'App\\Controller\\GreffeController',
                 'routes' => [
                     'list' => 'ROUTE_LIST',
+                     'new' => 'ROUTE_CREATE',
                 ],
             ],
             [
@@ -72,6 +73,7 @@ class DashboardService
                 'controller' => 'App\\Controller\\DossierMedicalController',
                 'routes' => [
                     'list' => 'ROUTE_LIST',
+                    'new' => 'ROUTE_CREATE',
                 ],
             ],
             [
@@ -89,6 +91,7 @@ class DashboardService
                 'controller' => 'App\\Controller\\ChirurgienController',
                 'routes' => [
                     'list' => 'ROUTE_LIST',
+                    'new' => 'ROUTE_CREATE',
                 ],
             ],
         ];

@@ -14,6 +14,7 @@ use App\Service\DonneurService;
 
 #[Route('/donneur')]
 final class DonneurController extends AbstractController {
+    
     public const ROUTE_LIST = 'donneur_list';
     public const ROUTE_CREATE = 'donneur_create';
     public const ROUTE_UPDATE = 'donneur_update';
@@ -75,7 +76,7 @@ final class DonneurController extends AbstractController {
             return $this->redirectToRoute(self::ROUTE_LIST);
         }
 
-        return $this->render('donneur/create.html.twig', [
+        return $this->render('donneur/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }

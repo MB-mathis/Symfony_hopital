@@ -2,51 +2,86 @@
 
 {% block title %}Liste des patients{% endblock %}
 
-{% block page_content %}
-<section class="section">
-    <div class="container">
-        <h1 class="title">Mes Patients</h1>
+{% block page_action %}
+    <a href="{{ path(constant('App\\Controller\\PatientController::ROUTE_CREATE')) }}"
+       class="button is-primary is-small">
+        Ajouter un patient
+    </a>
+{% endblock %}
 
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-            <div class="notification is-warning">
-                {{ message }}
-            </div>
-            {% endfor %}
+{% block page_content %}
+
+{# ================= FLASH ================= #}
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="notification is-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+{# ================= TABLE ================= #}
+
+<div class="table-container box is-card">
+
+    <table class="table is-fullwidth is-hoverable">
+
+        <thead>
+        <tr>
+            <th class="is-narrow">Nom</th>
+            <th>Prénom</th>
+            <th>Date de naissance</th>
+            <th class="is-narrow">Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for patient in patients %}
+            <tr>
+
+                <td>{{ patient.nom }}</td>
+                <td>{{ patient.prenom }}</td>
+                <td>
+                    {{ patient.dateNaissance ? patient.dateNaissance|date('d/m/Y') : 'N/A' }}
+                </td>
+
+                <td>
+                    <div class="buttons are-small">
+
+                        <a class="button is-info is-light"
+                           href="{{ path(constant('App\\Controller\\PatientController::ROUTE_SHOW'), {'id': patient.id}) }}">
+                            Voir
+                        </a>
+
+                        <a class="button is-warning is-light"
+                           href="{{ path(constant('App\\Controller\\PatientController::ROUTE_UPDATE'), {'id': patient.id}) }}">
+                            Éditer
+                        </a>
+
+                        <a class="button is-primary"
+                           href="{{ path(constant('App\\Controller\\PatientController::ROUTE_DOSSIER'), {'id': patient.id}) }}">
+                            Dossier
+                        </a>
+
+                    </div>
+                </td>
+
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="4" class="has-text-centered is-muted">
+                    Aucun patient trouvé
+                </td>
+            </tr>
         {% endfor %}
 
-        <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Date de naissance</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for patient in patients %}
-                <tr>
-                    <td>{{ patient.nom }}</td>
-                    <td>{{ patient.prenom }}</td>
-                    <td>{{ patient.dateNaissance ? patient.dateNaissance|date('d/m/Y') : 'N/A' }}</td>
-                    <td>
-                        <div class="buttons">
-                            <a class="button is-small is-info" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_SHOW'), {'id': patient.id}) }}">Voir</a>
-                            <a class="button is-small is-warning" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_UPDATE'), {'id': patient.id}) }}">Éditer</a>
-                            <a class="button is-small is-primary" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_DOSSIER'), {'id': patient.id}) }}">Dossier Médical</a>
-                        </div>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4" class="has-text-centered">Aucun patient trouvé.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        </tbody>
 
-        <a class="button is-success" href="{{ path(constant('App\\Controller\\PatientController::ROUTE_CREATE')) }}">Ajouter un patient</a>
-    </div>
-</section>
+    </table>
+
+</div>
+
 {% endblock %}

@@ -49,61 +49,66 @@
 </nav>
 
 {# ================= LAYOUT ================= #}
-<div class="columns is-gapless" style="margin-top: 3.25rem; height: calc(100vh - 3.25rem);">
+<div class="app-shell">
 
     {# ===== SIDEBAR ===== #}
-    <div class="column is-2 has-background-dark" style="overflow-y: auto;">
-        <aside class="menu p-4">
+    <aside class="app-sidebar">
+        <div class="p-4">
 
-            <p class="menu-label has-text-white">Navigation</p>
+            <p class="menu-label">Navigation</p>
 
             <ul class="menu-list">
 
                 <li>
-                    <a href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}" class="has-text-white">
+                    <a href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}"
+                       class="{% if app.request.attributes.get('_route') == constant('App\\Controller\\DashboardController::ROUTE_INDEX') %}is-active{% endif %}">
                         Dashboard
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ path(constant('App\\Controller\\PatientController::ROUTE_LIST')) }}" class="has-text-white">
+                    <a href="{{ path(constant('App\\Controller\\PatientController::ROUTE_LIST')) }}"
+                       class="{% if app.request.attributes.get('_route') starts with 'patient' %}is-active{% endif %}">
                         Patients
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}" class="has-text-white">
+                    <a href="{{ path(constant('App\\Controller\\GreffeController::ROUTE_LIST')) }}"
+                       class="{% if app.request.attributes.get('_route') starts with 'greffe' %}is-active{% endif %}">
                         Greffes
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_LIST')) }}" class="has-text-white">
+                    <a href="{{ path(constant('App\\Controller\\DonneurController::ROUTE_LIST')) }}"
+                       class="{% if app.request.attributes.get('_route') starts with 'donneur' %}is-active{% endif %}">
                         Donneurs
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ path(constant('App\\Controller\\ChirurgienController::ROUTE_LIST')) }}" class="has-text-white">
+                    <a href="{{ path(constant('App\\Controller\\ChirurgienController::ROUTE_LIST')) }}"
+                       class="{% if app.request.attributes.get('_route') starts with 'chirurgien' %}is-active{% endif %}">
                         Chirurgiens
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ path(constant('App\\Controller\\UserController::ROUTE_LIST')) }}" class="has-text-white">
+                    <a href="{{ path(constant('App\\Controller\\UserController::ROUTE_LIST')) }}"
+                       class="{% if app.request.attributes.get('_route') starts with 'user' %}is-active{% endif %}">
                         Utilisateurs
                     </a>
                 </li>
 
             </ul>
+        </div>
+    </aside>
 
-        </aside>
-    </div>
+    {# ===== MAIN ===== #}
+    <main class="app-main">
 
-    {# ===== MAIN CONTENT ===== #}
-    <div class="column" style="overflow-y: auto;">
-
-        <div class="p-5">
+        <div class="app-content">
 
             {# FLASH #}
             {% for label, messages in app.flashes %}
@@ -114,9 +119,28 @@
                 {% endfor %}
             {% endfor %}
 
-            {# HEADER PAGE #}
-            <div class="mb-5 is-flex is-justify-content-space-between is-align-items-center">
+            {# HEADER + BREADCRUMB #}
+            <div class="page-header">
+
                 <div>
+
+                    {# BREADCRUMB #}
+                    <nav class="breadcrumb mb-2" aria-label="breadcrumbs">
+                        <ul>
+                            <li>
+                                <a href="{{ path(constant('App\\Controller\\DashboardController::ROUTE_INDEX')) }}">
+                                    Accueil
+                                </a>
+                            </li>
+                            <li class="is-active">
+                                <a aria-current="page">
+                                    {{ block('title') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    {# TITRE #}
                     <h1 class="title">
                         {% block page_title %}{{ block('title') }}{% endblock %}
                     </h1>
@@ -124,19 +148,21 @@
                     <h2 class="subtitle">
                         {% block page_subtitle %}{% endblock %}
                     </h2>
+
                 </div>
 
                 <div>
                     {% block page_action %}{% endblock %}
                 </div>
+
             </div>
 
-            {# CONTENT FULL WIDTH #}
+            {# CONTENT #}
             {% block page_content %}{% endblock %}
 
         </div>
 
-    </div>
+    </main>
 
 </div>
 

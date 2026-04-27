@@ -15,6 +15,7 @@ use App\Security\Voter\PatientVoter;
 
 #[Route('/patient')]
 final class PatientController extends AbstractController {
+    
     public const ROUTE_LIST = 'patient_list';
     public const ROUTE_CREATE = 'patient_create';
     public const ROUTE_UPDATE = 'patient_update';
