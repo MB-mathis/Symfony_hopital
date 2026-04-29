@@ -10,8 +10,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Metadata\ApiResource;
 
-
+#[ApiResource(
+            normalizationContext: ['groups' => ['users:list']],
+        ),
+]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -22,6 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['users:list'])]
     private ?string $email = null;
 
     /**
@@ -40,6 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['users:list'])]
     private ?string $prenom = null;
 
     #[ORM\Column]

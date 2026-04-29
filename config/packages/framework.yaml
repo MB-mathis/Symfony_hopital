@@ -1,9 +1,12 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
+    
 
     # Note that the session will be started ONLY if you read or write from it.
     session: true
+    serializer: 
+        enabled: true
 
     trusted_proxies: '127.0.0.1,REMOTE_ADDR'
     trusted_headers:

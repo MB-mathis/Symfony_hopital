@@ -10,13 +10,20 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+
+#[ApiResource(
+            normalizationContext: ['groups' => ['patient:list']],
+        )
+]
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
-#[ApiResource]
 class Patient {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['patient:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
