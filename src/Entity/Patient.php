@@ -10,26 +10,34 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
+use App\State\Patient\PatientCollectionProvider;
+use ApiPlatform\Metadata\GetCollection;
+use App\Entity\User;
 
 
 #[ApiResource(
-            normalizationContext: ['groups' => ['patient:list']],
+    normalizationContext: ['groups' => ['patient:list']],
+    operations: [
+        new GetCollection(
+            provider: PatientCollectionProvider::class
         )
-]
+    ]
+)]
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
 class Patient {
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['patient:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['patient:list'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['patient:list'])]
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
