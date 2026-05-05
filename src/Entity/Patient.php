@@ -47,6 +47,7 @@ class Patient {
     private ?Sexe $sexe = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['patient:list'])]
     private ?string $ville = null;
 
     #[ORM\Column(length: 255)]

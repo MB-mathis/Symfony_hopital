@@ -12,11 +12,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Attribute\Groups;
+use ApiPlatform\Metadata\Get;
+use App\State\User\MeProvider;
 
 #[ApiResource(
-            normalizationContext: ['groups' => ['users:list']],
-        ),
-]
+    operations: [
+    new Get(
+        uriTemplate: '/me',
+        provider: MeProvider::class,
+        normalizationContext: ['groups' => ['me:read']],
+        security: "is_granted('IS_AUTHENTICATED_FULLY')"
+    )
+    ]
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -27,13 +35,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['users:list'])]
+    #[Groups(['me:read'])]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Groups(['me:read'])]
     private array $roles = [];
 
     /**
@@ -43,11 +52,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['users:list'])]
+    #[Groups(['me:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['users:list'])]
+    #[Groups(['me:read'])]
     private ?string $prenom = null;
 
     #[ORM\Column]
