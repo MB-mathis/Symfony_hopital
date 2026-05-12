@@ -14,13 +14,20 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use App\State\Patient\PatientCollectionProvider;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\User;
+use ApiPlatform\Metadata\Get;
 
 
 #[ApiResource(
     normalizationContext: ['groups' => ['patient:list']],
+    denormalizationContext: ['groups' => ['patient:write']],
     operations: [
         new GetCollection(
             provider: PatientCollectionProvider::class
+        ),
+
+        new Get(
+            normalizationContext: ['groups' => ['patient:detail']],
+            security: "is_granted('view', object)"
         )
     ]
 )]
@@ -30,37 +37,44 @@ class Patient {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['patient:list', 'patient:detail'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['patient:list'])]
+    #[Groups(['patient:list', 'patient:detail'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['patient:list'])]
+    #[Groups(['patient:list', 'patient:detail'])]
     private ?string $prenom = null;
 
+    #[Groups(['patient:detail'])]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateNaissance = null;
 
+    #[Groups(['patient:detail'])]
     #[ORM\Column(type: Types::STRING, enumType: Sexe::class)]
     private ?Sexe $sexe = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['patient:list'])]
+    #[Groups(['patient:list', 'patient:detail'])]
     private ?string $ville = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['patient:detail'])]
     private ?string $codePostal = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['patient:detail'])]
     private ?string $telephone = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['patient:detail'])]
     private ?string $email = null;
 
     #[ORM\Column]
     #[Gedmo\Timestampable(on: 'create')]
+    #[Groups(['patient:detail'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -73,6 +87,7 @@ class Patient {
     #[ORM\ManyToOne(inversedBy: 'patients')]
     #[ORM\JoinColumn(nullable: false)]
     #[Gedmo\Blameable(on: 'create')]
+    #[Groups(['patient:detail'])]
     private ?User $createdBy = null;
 
     #[ORM\ManyToOne(inversedBy: 'patients')]
